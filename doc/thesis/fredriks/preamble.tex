@@ -1,0 +1,82 @@
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,amscd}
+\usepackage{mathtools}
+\usepackage{color}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{nicefrac}
+\usepackage{cite}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage[table]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{calc}
+\usetikzlibrary{shapes.misc}
+\usetikzlibrary{hobby} 
+\tikzstyle{hackennode}=[draw,circle,fill=white,inner sep=0,minimum size=4pt]
+\tikzstyle{hackenline}=[line width=3pt]
+\usepackage{scalefnt}
+\usepackage[all]{xy}
+\usepackage{pgfplots}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{siunitx}
+\usepackage{float}
+\usepackage{textcomp}
+\usepackage{caption}
+\usepackage[nottoc,notlot,notlof]{tocbibind}
+\usepackage{mdframed}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\deriv}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\dderiv}[2]{\frac{\mathrm{d^2}#1}{\mathrm{d}#2^2}}
+\newcommand{\dint}{\,\mathrm{d}}
+\newcommand{\ve}[1]{\mathbf{#1}}
+
+\theoremstyle{plain}
+\newtheorem{thm1}{Theorem}
+\newtheorem{lem1}[thm1]{Lemma}
+\newtheorem{cor}[thm1]{Corollary}
+\newtheorem{prop}[thm1]{Proposition}
+\newtheorem{ctex}[thm1]{Counterexample}
+
+\theoremstyle{definition}
+\newtheorem{ex1}[thm1]{Example}
+\newtheorem{remrk}[thm1]{Remark}
+\newtheorem{defn1}[thm1]{Definition}
+
+
+\usepackage[many]{tcolorbox}
+
+\newtcolorbox{ex}[2][]{%
+  enhanced,frame hidden,interior hidden,
+  arc=10pt,outer arc=10pt,borderline={3pt}{2pt}{dashed,thick},borderline={3pt}{-2pt}{dashed,thick},
+  before upper={#2\begin{ex1}},after upper={\end{ex1}}
+}
+\newtcolorbox{proof2}[2][]{%
+  enhanced,breakable,frame hidden,interior hidden,
+  arc=0pt,outer arc=0pt,borderline={0.5pt}{-0pt}{dashed},
+  before upper={\begin{proof}[\textbf{#2}]},after upper={\end{proof}}
+}
+
+\newenvironment{defn}
+  {\begin{mdframed}\begin{defn1}}
+  {\end{defn1}\end{mdframed}}
+\newenvironment{thm}
+  {\begin{mdframed}\begin{thm1}}
+  {\end{thm1}\end{mdframed}}
+\newenvironment{lem}
+  {\begin{mdframed}[nobreak=true]\begin{lem1}}
+  {\end{lem1}\end{mdframed}}
+
+\usepackage[a4paper, total={5.6in, 8.2in}]{geometry}
+\usepackage{wrapfig}
+\usepackage[labelfont=bf]{caption}
+\usepackage{rotating}
+
+\allowdisplaybreaks
+\usepackage{lipsum}
+\usepackage{hhline}

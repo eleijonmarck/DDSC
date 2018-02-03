@@ -1,0 +1,2 @@
+\frametitle{Own implementation}
+\lstinputlisting[language=Python, firstline=185, lastline=202]{../../src/sc/sc/sc.py}

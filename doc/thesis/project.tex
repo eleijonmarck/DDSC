@@ -1,0 +1,125 @@
+\documentclass[a4paper]{article}
+
+\input{preamble.tex}
+
+\usepackage{rotating}
+
+\begin{document}
+\pagenumbering{gobble}% Remove page numbers (and reset to 1)
+\title{Exploiting Temporal Difference for Energy Disaggregation via Discriminative Sparse Coding}
+%\date{2013-12-11}
+\author{Eric Leijonmarck\\
+\texttt{ericle@kth.se}}
+\input{titlepage.tex}
+
+\input{abstract.tex}
+%• Abstract: the complete report condensed to less than half a page. Do not forget the
+%results and do not refer to the content in the report.
+\newpage
+
+\tableofcontents
+%Process
+% Independently plan and carry out the project within agreed time frames, show good initiative and be open to supervision and critique. Independently identify one’s own need for new knowledge and acquire this knowledge. Show a good ability to adopt the perspective of another’s work and formulate relevant and constructive critique.
+%Engineering
+% From problems/inquiries and methodology, show a very good ability to apply engineering-related and scientific skills like problem formulation, modelling, analysis, development and evaluation in a systematic way. Where this is relevant, show awareness of societal and ethical aspects, including economically, socially, and ecologically sustainable development.
+
+% overview commands
+\newcommand{\intOverview}{This section describes the motivation behind this thesis, it also gives a brief introduction to energy disaggregation and its challenges and future prospects.}
+\newcommand{\preOverview}{This section presents a brief overview of the mathematical background behind Optimization, Machine Learning and Artificial Neural Networks (ANN) to eventually go into Sparse Coding with two examples in computer vision and speech recognition.}
+\newcommand{\proOverview}{In this section we describe what is demanded from the solution and what the thesis aim at achieve as well as some useful simplifications made for the thesis.}
+\newcommand{\fabOverview}{In this section we talk about the dataset used and the data pre-processing done for usability. Here we also make a complete outline of the Discriminative Disaggregation via Sparse Coding (DDSC) algorithm, as well as the implementation.}
+\newcommand{\resOverview}{This section presents the performed experiments, along with their respective results. We first present results based on subset to prove that the algorithm works properly on a small subset. Next we present results on different temporal subsets of the data. We then present predicted energy profiles and total energy profiles, then showing the learned basis functions and furthermore error and accuracy results. Finally, showing the evolution of the accuracy and error for the different settings.}
+\newcommand{\conOverview}{This section discusses and concludes the methods and results given by this paper, as well as future research and improvements that could be made to the implementation.}
+
+\newpage
+\pagenumbering{arabic}% Arabic page numbers (and reset to 1)
+\section{Introduction}
+%What is the purpose? What is the context? What has been done before?
+%How does this differ from earlier work? Explain the structure of the report.
+\input{introduction.tex}
+
+\newpage
+%Preliminaries/Theory/Scientific Background/
+\section{Preliminaries}
+% Is there any useful theory? What are the methods used
+% before for similar problems?
+\input{preliminaries.tex}
+% sparse coding, Discriminative vs Generative, Discriminative Disaggregation Sparse Coding, Non-Negative Sparse Coding
+\newpage
+\section{Problem Definition}
+%• Problem definition: What is demanded from the solution? What is the aim of the study?
+%Useful simplifications?
+\input{problemdef.tex}
+%• Solution/Design: How is it to be done? Will it give the expected performance? What
+%limitations can be foreseen from theory?
+
+\newpage
+% Method/Fabrication/Experimental setup
+\section{Fabrication}
+\label{sec:fab}
+% - Block coordinate update, Pre-processing, 
+\input{method.tex}
+
+\newpage
+\section{Results}
+%• Results: What were the results? What could be deduced from the results? Uncertainty in
+%the results? Do we now know everything?
+\input{results.tex}
+
+\newpage
+\section{Conclusions and Open Questions}
+%• Conclusions/discussion: Did we reach the result we were aiming for? If not why?
+%Would another approach have been better? What significance does the results have?
+%What would be an appropriate next step?
+\input{conclusions.tex}
+\newpage
+
+%\section{Bibliography}
+\input{bibliography.tex}
+\newpage
+
+%\appendix
+%\section{Formula Computed Values of Games}
+
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+% - if you want to use bibtex!
+
+%\label{Bibliography}
+
+%\lhead{\emph{Bibliography}} % Change the page header to say "Bibliography"
+%
+%\bibliographystyle{unsrtnat} % Use the "unsrtnat" BibTeX style for formatting the Bibliography
+%
+%\bibliography{Bibliography} % The references (bibliography) information are stored in the file named "Bibliography.bib"
+
+% ---------------------------------------------------------------------------------------
+% APPENDIX
+% --------------------------------------------------------------------------------------------
+
+\newpage
+\section{Appendix}
+\label{sec:appendix}
+
+\subsection{Source Code for Utility Functions}
+\inputminted[mathescape,linenos,numbersep=5pt,gobble=0,frame=lines,framesep=2mm]{python}{util.py}
+
+\newpage
+
+\subsection{Source Code for Non-Negative Sparse Coding}
+\label{sec:sc_nnsc}
+\inputminted[mathescape,linenos,numbersep=5pt,gobble=0,frame=lines,framesep=2mm]{python}{nnsc.py}
+
+\newpage
+
+\subsection{Source Code for Discriminative Disaggregation}
+\label{sec:sc_dd}
+\inputminted[mathescape,linenos,numbersep=5pt,gobble=0,frame=lines,framesep=2mm]{python}{dd.py}
+%\lstinputlisting[language=Python]{nnsc.py}
+
+
+\end{document}
+

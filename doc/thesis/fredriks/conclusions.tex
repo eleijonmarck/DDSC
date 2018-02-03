@@ -1,0 +1,70 @@
+With Theorem \ref{thm:2rowvalue} we have that it is easy to compute the value of any partizan poset game played on a chess-colored two-row Young diagram, for which a formula was provided. With Theorem \ref{thm:3rowvalue} we have proved that it is easy to compute the value of any partizan poset game played on a chess-colored three-row Young diagram. 
+\\
+The first question one might ask is why the formula to compute any three-row game is so complex? 
+\\
+When analyzing the three-row games in order to find a formula to compute their value, it was discovered that the value of the games were somewhat "chaotic" when the length of the third row of the games was below 4. Although no clear evidence for why have been found, one plausible explanation to this would be that games of lengths not exceeding 3 is the same if flipped, and it can be played from two different directions (from the right as usual, and from below). A short example is provided below to illustrate this.
+\begin{ex}{}~\\
+\begin{minipage}{0.4\textwidth}
+The game $A_{3,3,1}$ is the same as the game $A_{3,2,2}$, and can therefore be seen to be played both from the right as usual, and from below, as illustrated in Figure \ref{fig:flipex}.
+\end{minipage}
+\begin{minipage}{0.6\textwidth}
+\begin{figure}[H]
+\centering
+$\begin{tabular}{ | c | c | c |}
+\hline
+~&\cellcolor[gray]{0}&~\\
+\hline
+\cellcolor[gray]{0}&~&\cellcolor[gray]{0}\\
+\hline
+~\\
+\cline{1-1}
+\end{tabular}
+=
+\begin{tabular}{ | c | c | c |}
+\hline
+~&\cellcolor[gray]{0}&~\\
+\hline
+\cellcolor[gray]{0}&~\\
+\cline{1-2}
+~&\cellcolor[gray]{0}\\
+\cline{1-2}
+\end{tabular}
+$
+\captionof{figure}{}
+\label{fig:flipex}
+\end{figure}
+\end{minipage}
+\end{ex}
+~\\
+One thing that follows from the formulas of Theorems \ref{thm:2rowvalue} and \ref{thm:3rowvalue} is that the value of the games goes asymptotically toward a quotient when the length of the rows grows. In particular,
+\begin{align*}
+\lim_{n\rightarrow\infty}A_{n,0}=\frac{2}{3},&&
+\lim_{n\rightarrow\infty}A_{n,n}=\frac{2}{5},&&
+\lim_{n\rightarrow\infty}A_{n,n,n}=\frac{29}{60}.
+\end{align*} 
+This can be seen as a result of that the option to remove the greatest elements decreases as they are further from the root of the diagram. What one might ask is if this is still true for games with more than three rows? Intuitively, it seems very plausible for the above to be true, but it remains to be proved.
+\\
+Another question concerning games with more than three rows is if it is possible to find formulas for these kind of games in general, for any number of rows. This is also something that seems very plausible, largely because of the regularity of the chess-coloring, but it is also something that remains to be proven. A follow-up question to this is also if such a formula will have the same issues as with the three-row-formula, that is, if the value of the games of more than three rows also will have some chaotic behavior when they are small enough?
+\\
+Something other that would be interesting to investigate is also how the games are affected by other colorings, or with skew Young diagrams (a skew Young diagram is a Young diagram obtained by removing a smaller Young diagram from a larger one that contains the smaller one, see Figure \ref{fig:skewyoung} below). For games played on Young diagrams it is clearly very easy to determine the winner of the game, since it will always be the one with its color in the upper-left corner. The more interesting question is therefore if it is possible to say anything about the value of a game with some different coloring, for exampling a coloring with a more random nature.
+
+\begin{figure}[H]
+\centering
+\begin{tabular}{ | c | c | c | c | c | c | c |}
+\hhline{-------}
+\cellcolor[gray]{0.5}&\cellcolor[gray]{0.5}&\cellcolor[gray]{0.5}&\cellcolor[gray]{0.5}&~&~&~\\
+\hhline{-------}
+\cellcolor[gray]{0.5}&\cellcolor[gray]{0.5}&~&~&~\\
+\hhline{-----~~}
+\cellcolor[gray]{0.5}&~\\
+\cline{1-2}
+~&~\\
+\cline{1-2}
+~\\
+\cline{1-1}
+\end{tabular}
+\captionof{figure}{The non-gray boxes constitute a skew Young diagram.}
+\label{fig:skewyoung}
+\end{figure}
+%\\\\
+Lastly, following the results of Theorem \ref{thm:playstrategy}, that a player wants to play the options of removing an element as great as possible, we may note that this is very similar to the only allowed moves in pomax games when, with the difference of also being able to remove non-maximal elements as long as they are only smaller than elements of the opposite color. From these similarities, an interesting question is how much of the analysis of the pomax games that can be transferred to the regular partizan poset games.

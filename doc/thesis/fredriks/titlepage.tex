@@ -1,0 +1,50 @@
+\begin{titlepage}
+\begin{center}
+
+\makeatletter
+
+% Upper part of the page. The '~' is needed because \\
+% only works if a paragraph has started.
+
+%\begin{figure}[h!]
+%  \centering
+%    \includegraphics[width=0.3\textwidth]{KTH}
+%\end{figure}
+%~\\~\\
+\textsc{{\LARGE KTH Royal Institute of Technology}
+\\[0.3cm]
+{\large Department of Mathematics}
+\\[0.7cm]
+{\Large SF279X, Master's Thesis}}\\[0.5cm]
+
+% Title
+\noindent
+\rule{\linewidth}{0.2mm}
+{ \begin{spacing}{1.5} \Huge \bfseries \@title \end{spacing} }
+\noindent
+\rule{\linewidth}{0.2mm}\\[1.5cm]
+
+% Author and supervisor
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Author:}\\
+\@author
+\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Supervisor:} \\
+Jonas Sj\"ostrand\\
+\texttt{jonass@kth.se}
+\end{flushright}
+\end{minipage}
+
+\vfill
+
+% Bottom of the page
+{\large \@date}
+
+\makeatother
+
+\end{center}
+\end{titlepage}

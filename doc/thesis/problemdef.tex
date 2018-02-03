@@ -1,0 +1,19 @@
+%• Problem definition: What is demanded from the solution? What is the aim of the study?
+%Useful simplifications?
+In this section we describe what is required of the solution and what this thesis aims at achieving as well as some useful simplifications made for this thesis.
+
+
+Kotler et. al. \cite{DDSC} train the DDSC algorithm with weeks sampled across two years of data as to generalize the training. This thesis aims at reimplementing the algorithm and investigating the possibility of training with less data but taking the advantage of the temporal correlation between years as to further extend the algorithm by pre-processing the data better, by training the algorithm for the same timeperiod across two years instead of randomly.
+
+\subsection{Solution}
+%• Solution/Design: How is it to be done? Will it give the expected performance? What
+%limitations can be foreseen from theory?
+
+\begin{enumerate}
+	\item{Retrieve similar data}
+	\item{Pre-process}
+	\item{Implementation}
+	\item{Tweak algorithm using temporal difference}
+\end{enumerate}
+
+The first problem to address is to retrieve valuable and similar data mostly found via githubs \href{https://github.com/caesar0301/awesome-public-datasets}{Awesome-public-datasets} \cite{awesome}. Once the data has been decided on we pre-process and implement the algorithm, where the algorithm itself could pose a challenge as there is no explicit formulation stated in the paper \cite{DDSC}, nor any source code available. This thesis aims at reproducing the results, by focusing on exploiting the data at hand. The method relies substansually on the data, which could prove to produce very different results. The implementation is limited by the amount of computational power that is available as it run by standard student-laptop. This is reflected on the choice of training set and as well as the choice of number of basis for the algorithms (this is preferably higher in dimension than the dimensionality of the data).

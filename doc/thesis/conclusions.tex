@@ -1,0 +1,66 @@
+This section discusses and concludes the results from section \ref{sec:evaluation} given by this paper, in sections \ref{sec:results}-\ref{sec:temp}. We also present future research and improvements in section \ref{sec:future}.
+
+\subsection{Energy Disaggregation results}
+\label{sec:results}
+The disaggregation algorithm has shown to be implemented correctly but used with caution with regards to data, parameters and computational power. The algorithm has an overall accuracy of around 25\% by the equation \ref{eq:acc}. This would however say that we have a good accuracy compared to what the energy profiles show in the figures in section \ref{sec:evaluation}. Most of the predicted energy profiles for larger datasets are heavily overestimated in their energy consumption. Moreover, the results for a week and two weeks have shown not to provide accurate results given that we use lesser basis functions than the models suggest. They might be improved by providing the algorithm with computational power and thereby use sufficient basis functions as shown in the results in the beginning of section \ref{sec:evaluation}. Here we used roughly 10 times the amount of basis functions compared to the dimensions of the data, which provided more accurate results. The algorithm can surely be improved with computational power by providing the algorithm with more samples (houses), in the results provided in this thesis we had to even cut a good amount of good data to be able to run the algorithm, the dataset that Pecan Street \cite{pecan} really provided, was an extensive amount of data, we discuss more on that in section \ref{sec:dataset}.
+
+The algorithm shown to be good at producing complex structures, such as a dishwasher being "on" and "off" during a certain time period, as shown in the figures for the basis functions \ref{fig:basis_functions}, it can also be shown in the prediction for the air-condition in figure \ref{fig:subset}. However, it was not accurate at which of the appliances that were being used, the algorithm seemed to infer that one appliance stood for most of the energy consumption, which was false for most of the data. It also highly overestimated the power consumption of all of the appliances. This could be a fault in the DDSC algorithm implemented as shown in the evaluation of the norms during the training. The norm of the activations seemed to react heavily for the whole home energy usage and might have provided the algorithm with an overestimation of the energy consumption for all of the appliances.
+
+\subsection{Algorithm}
+
+The algorithm provided in Kotler et.al in \cite{DDSC} was cumbersome to implement. They provide a section with model implementation but state that they have precluded the details due to space constraints. Thankfully Scikit-learn \cite{scikit} has been a source to go to for help regarding implementing such an algorithm, such as the DDSC. The algorithm also has some parameter choices, which was fitted using grid-search, this was however not implemented and could provide the algorithm with better results. They did not state explicitly which parameters they used for disaggregation which would have made the implementation easier, see section \ref{sec:params} below for more thought on the parameters for the algorithm. The overestimation of the energy consumption might have been avoided by implementing the extension presented below in section \ref{sec:extensions}.
+
+\subsubsection{Extensions}
+\label{sec:extensions}
+Here we present the extension proposed by Kotler et.al. \cite{DDSC} to modify the standard Sparse Coding formulation. This could be implemented into the model, which was said to increase accuracy by 1.3\% when using both of the extensions, more detail explanations are in their paper \cite{DDSC} page five.
+
+\textbf{Total energy priors.} Kotler et. al. mention that the Sparse Coding model presented does not take into consideration the different power consumptions that the appliances might have. They could take similar shapes such as dishwasher and refrigerator into the same category while they might have totally different power consumption while operating. In summary, this extension penalizes the deviation between a device and its mean total energy. \cite{DDSC}
+\vspace{0.1in}
+\[
+F_{TEP}(\bar{\mathbf{X}},\mathbf{B}_{1:k},\mathbf{A}_{1:k}) = F(\bar{\mathbf{X}},\mathbf{B}_{1:k} \mathbf{A}_{1:k}) + \lambda_{TEP}\sum_{i=1}^k \norm{\mu_i\mathbf{1}^T-\mathbf{1}^T\mathbf{B}_i\mathbf{A}_i}^2_2
+\]
+where $\mathbf{1}$ denotes a vector of ones of the appropriate size, and $\mu_i = \frac{1}{m} \mathbf{1}^T \mathbf{X}_i$ denotes the average total energy of device class $i$.
+\vspace{0.1in}
+\\
+\textbf{Group Lasso.} Since energy consumption exhibit some sparsity at the device level (zero energy consumption, or not being monitored in the home), Kotler et.al. encourage a grouping effect to the activations. This could have prevented the algorithm for prioritizing one appliance across all of the other appliances. To achieve extension, one can employ the group Lasso algorithm \cite{grouplasso}, 
+\vspace{0.1in}
+\[
+F_{GL}(\bar{\mathbf{X}},\mathbf{B}_{1:k},\mathbf{A}_{1:k}) = F(\bar{\mathbf{X}},\mathbf{B}_{1:k} \mathbf{A}_{1:k}) + \lambda_{GL}\sum_{i=1}^k \sum_{j=1}^m \norm{\mathbf{a}_i^{(j)}}_2
+\]
+They also present \textbf{Shift Invariant Sparse Coding}, which they say could not capture the information wanted. \cite{DDSC}
+
+\subsection{Dataset}
+\label{sec:dataset}
+
+The dataset needed a lot of preparation to be able to even come remotely close to being a full dataset. Kotler et.al. did not address if they spent time on data pre-processing any of the data which seems almost unreasonable for their amount of data. Furthermore, the assumptions made in the data pre-processing for this thesis, presented in detail in section \ref{sec:prep} have made an impact on the results and Kotler et.al. do not present any of these assumptions that must have been made to be able to work with that amount of data. The dataset used in this thesis has not been validated via a cross-validation, which could improve the algorithm slightly.
+In this thesis data from the Pecan Street was shown to represent a Weibull distribution which could be used for a generalization of the energy consumption in the area around Pecan Street or used for disaggregation based on distributional disaggregation, such as Semi-Markov models \cite{kotler2}.
+
+%\pagebreak[3]
+\subsection{Temporal difference}
+\label{sec:temp}
+This thesis has shown that trying to train the algorithm by exploiting temporal difference has not been proven useful. The conclusion drawn from this is that one should use, as much data as available as Sparse Coding needs enough data for it to provide a good representation of the profiles. Training data for other appliances other than that of Pecan Street are scarce and hard to come by, which indicates that we need to use the data that is available.
+
+\subsection{Future research}
+\label{sec:future}
+Here we present future research that might come to help with DDSC algorithm or provide insight into the field of energy disaggregation as a whole.
+\subsubsection{Hyper-parameter Optimization}
+\label{sec:params}
+
+The type of hyper-parameter controls the capacity of a model, i.e., how flexible the model is, how many degrees of freedom it has in fitting the data. Proper control of model capacity can prevent overfitting, which happens when the model is too flexible, and the training process adapts too much to the training data, thereby losing predictive accuracy on new test data. So a proper setting of the hyper-parameters is important \cite{hyper}.
+
+There exists algorithms for defining the hyper-parameters of the model, one being that of Sequential Model-based Global Optimization (SMBO). These algorithms have been used in applications where evaluation of the fitness function is expensive. In an application where the true fitness function $f : X \rightarrow R$ is costly to evaluate, model-based algorithms approximate $f$ with a surrogate
+that is cheaper to evaluate \cite{hyper}. There also exits "The Gaussian Process Approach", Tree-structured Parzen Estimator Approach (TPE), Random Search for Hyper-Parameter Optimization in DBNs (deep-belief-networks) and Sequential Search for Hyper-Parameter Optimization in DBNs. The latter of the two could prove to be valuable for methods just like the DDSC algorithm for providing the algorithm with the correct hyper-parameters for the model \cite{hyper}.
+
+\subsubsection{Autoencoders}
+
+Most Deep Learning systems heavily use unlabeled as well as labeled data. Large amounts of unlabeled data (Millions of pictures, gigabytes of text, tons of hours of voice) are used for feature learning mainly through deep autoencoders. The output of this phase is a high level abstraction of the data. The recent development with using autoencoders by Google in 2012, where even Andrew Yg. contributed to the work. There an unsupervised deep learning approach was used, trained it with Millions of YouTube images and the final neurons could recognize faces, cars, and cats. So for this network you just need to map the neurons to the labels you like to have, e.g. this is a face, a car, a cat. \cite{google} The large amount of unlabeled data that makes up the energy sector makes deep learning approaches so strong.
+
+\subsubsection{Block Coordinate Update}
+\label{sec:bcd}
+Regularized block multiconvex optimization presented in 2013 by Yangyang Xu and Wotao Yin \cite{block2}, is an interesting approach, where the feasible set and objective function are generally non-convex but convex in each block of variables. It also accepts non-convex blocks and requires these blocks to be updated by proximal minimization. Compared to the existing state-of-the-art algorithms, the proposed algorithm demonstrate superior performance in both speed and solution quality. This work could pose to be the next approach to energy disaggregation.
+
+\subsubsection{Dropout}
+Dropout, by Hinton et al. \cite{dropout}, in 2014, is perhaps the biggest invention in the field of neural networks in recent years. It addresses the main problem in machine learning that is overfitting. It does so by “dropping out” some unit activations in a given layer that is setting them to zero. Thus it prevents co-adaptation of units and can also be seen as a method of assembling many networks sharing the same weights. For each training example a different set of units to drop is randomly chosen. The dropout procedure can also be applied to the input layer by randomly deleting some of the input-vector components typically an input component is deleted with a smaller probability. Dropout has been reported to yield remarkable improvements on several difficult problems, for instance in speech and image recognition and hopefully could provide a means to remove overfitting in energy disaggregation as well. \cite{dropout}
+
+\subsection{Final words, Open questions}
+One interesting take that was discussed during this thesis was the precision of the algorithms for energy disaggregation. If we would be able to disaggregate with an accuracy of over 90\%, how would the public react with privacy issues? Would people want to provide their energy usage and if so, how much can be attained by the utility companies?

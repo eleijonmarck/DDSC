@@ -1,0 +1,634 @@
+In this section we will prove that a partizan poset game played on a chess-colored three-row Young diagram is easy to compute by providing and proving correctness of a formula to compute the value of any such game $A_{x,y,z}$.
+%\\
+\begin{thm}
+\label{thm:3rowvalue}
+There is a formula, with equations given by (\ref{eq:3rowvalue}), to compute the value of partizan poset games played on any chess-colored three-row Young diagrams. 
+%\\
+%In particular, we have that the value of $A_{x,y,z}$ is given by (\ref{eq:3row1}) if $x,y,z\ge4$, (\ref{eq:3row2}) if $x,y\ge4,z=3$, (\ref{eq:3row3}) if $x,y\ge4,z=2$, (\ref{eq:3row4}) if $x\ge4,y=3,z=3$, (\ref{eq:3row5}) if $x\ge4,y=3,z=2$, (\ref{eq:3row6}) if $x\ge4,y=2,z=2$, (\ref{eq:3row7}) if $x=y,y\ge 1,z=1$, (\ref{eq:3row8}) if $x=y+1,y\ge 1,z=1$, (\ref{eq:3row9}) if $x>y,y\ge1,z=1$, (\ref{eq:3row10}) if $x>y,y\ge1,z=1$, (\ref{eq:3row11}) if $z=0$, (\ref{eq:3row12}) if $x=2,y=2,z=2$, (\ref{eq:3row13}) if $x=3,y=2,z=2$, (\ref{eq:3row14}) if $x=3,y=3,z=2$, (\ref{eq:3row15}) if $x=3,y=3,z=3$.
+\begin{subequations}
+\label{eq:3rowvalue}
+\begin{align}
+\label{eq:3row1}
+\begin{split}
+\frac{237}{512} & -2^{-(2z+1)}\left(\frac{2^{z+1}}{3}\left((-1)^z-2^{z-4}\right)-\frac{1}{5}\left((-1)^z-4^{z-4}\right)\right)\\
+& -2^{-(y+z+1)}\left(2^{z+1}-1\right)(-1)^y\frac{1}{3}\left(1-(-2)^{y-z}\right)\\
+& -2^{-x}(-1)^x\frac{1}{3}\left(1-(-2)^{x-y}\right)\\
+%&\text{ if $x\ge y\ge z\ge4$}
+\end{split}%&\text{ if $x\ge y\ge z\ge4$}
+&&x\ge y\ge z\ge4
+\\
+\label{eq:3row2}
+\begin{split}
+\frac{119}{256}&-2^{-(y+4)}(-1)^y5\left(1-(-2)^{y-4}\right)\\
+& -2^{-x}(-1)^x\frac{1}{3}\left(1-(-2)^{x-y}\right)\\
+%&\text{ if $x\ge y\ge4, z=3$}
+\end{split}
+&&x\ge y\ge 4,z=3
+\\
+\label{eq:3row3}
+\begin{split}
+\frac{59}{128}&-2^{-(y+3)}(-1)^y\frac{7}{3}\left(1-(-2)^{y-4}\right)\\
+& -2^{-x}(-1)^x\frac{1}{3}\left(1-(-2)^{x-y}\right)\\
+%&\text{ if $x\ge y\ge4, z=2$}
+\end{split}
+&&x\ge y\ge 4,z=2
+\\
+\label{eq:3row4}
+\begin{split}
+\frac{59}{128}&-2^{-x}(-1)^x\frac{1}{3}\left(1-(-2)^{x-4}\right)\\
+%&\text{ if $x\ge 4,y=3,z=3$}
+\end{split}
+&&x\ge 4,y=z=3
+\\
+\label{eq:3row5}
+\begin{split}
+\frac{29}{64}&-2^{-x}(-1)^x\frac{1}{3}\left(1-(-2)^{x-4}\right)\\
+%&\text{ if $x\ge 4,y=3,=2$}
+\end{split}
+&&x\ge 4,y=3,z=2
+\\
+\label{eq:3row6}
+\begin{split}
+\frac{15}{32}&-2^{-x}(-1)^x\frac{1}{3}\left(1-(-2)^{x-4}\right)\\
+%&\text{ if $x\ge 4,y=2,z=2$}
+\end{split}
+&&x\ge 4,y=z=2
+\\
+\label{eq:3row7}
+\begin{split}
+\frac{1}{2}&-2^{-(y+3)}(-1)^y\left(3-(-1)^y\right)\\
+%&\text{ if $x=y\ge z=1$}
+\end{split}
+&&x=y,z=1
+\\
+\label{eq:3row8}
+\begin{split}
+\frac{1}{2}&-2^{-(y+3)}(-1)^y\left(-3-(-1)^y\right)\\
+%&\text{ if $x=y+1,y\ge z=1$}
+\end{split}
+&&x=y+1,z=1
+\\
+\label{eq:3row9}
+\begin{split}
+\frac{1}{2}&+\frac{1}{3}2^{-(y+1)}-\frac{1}{3}2^{-(x-1)}(-1)^x\\
+%&\text{ if $x>y\ge z=1$ and $y$ is even}
+\end{split}
+&&
+\begin{array}{l}
+x>y\ge z=1\\
+\text{and x is even}
+\end{array}
+\\
+\label{eq:3row10}
+\begin{split}
+\frac{1}{2}&-\frac{1}{3}2^{-(y+2)}-\frac{1}{3}2^{-x}(-1)^x\\
+%&\text{ if $x>y\ge z=1$ and $y$ is odd}
+\end{split}
+&&
+\begin{array}{l}
+x>y\ge z=1\\
+\text{and x is odd}
+\end{array}
+\\
+\label{eq:3row11}
+\begin{split}
+\frac{2}{5}&+\frac{1}{15}4^{-(y-1)}(-1)^y-\frac{1}{3}2^{-(x+y-1)}(-1)^x\\
+%&2^{-(x+2y-1)}\left(\frac{2^x}{5}\Big(2^{2y}-(-1)^y\Big)+\frac{1}{3}\Big(2^x(-1)^y-2^y(-1)^x\Big)\right)\\
+%&\text{ if $x\ge y\ge z=0$}
+\end{split}
+&&x\ge y\ge z=0
+\\
+\label{eq:3row15}
+\begin{split}
+\frac{35}{64}
+\end{split}
+&&x=y=z=3
+\\
+\label{eq:3row14}
+\begin{split}
+\frac{17}{32}
+\end{split}
+&&x=y=3,z=2
+\\
+\label{eq:3row13}
+\begin{split}
+\frac{9}{16}
+\end{split}
+&&x=3,y=z=2
+\\
+\label{eq:3row12}
+\begin{split}
+\frac{13}{32}
+\end{split}
+&&x=y=z=2
+\end{align}
+\end{subequations}
+\end{thm}
+~\\
+We will prove the theorem by induction, assuming that it is true for any option of an arbitrary game $A_{x,y,z}$, and from this showing that it is then also true for the game itself. But first, we will prove a lemma that we will use in order to reduce the game by specifying when to play in which row.
+\begin{lem}
+Assuming Theorem \ref{thm:3rowvalue} is true for all options of the game $A_{x,y,z}$, then the following is true.
+\begin{itemize}
+\item[(i)]Playing the option to remove the greatest element in the first row of your color is the dominating option if $x\ge y+z+1$.
+\item[(ii)]Playing the option to remove the greatest element in the second row of your color is the dominating option if $x<y+z+1$ and $y>z$.
+\item[(iii)]Playing the option to remove the greatest element in the third row of your color is the dominating option if $x<y+z+1$ and $y=z$ and $z>2$.
+\item[(iv)]If $x<y+z+1$ and $y=z=1$, playing the option to remove the (only) element in the third row is the dominating option for Left and playing the option to remove the (only) element in the second row is the dominating option for Right.
+\item[(v)]If $x<y+z+1$ and $y=z=2$, playing the option to remove the (only) white element in the second row is the dominating option for Left and playing the option to remove the (only) black element in the third row is the dominating option for Right.
+\end{itemize}
+\label{lem:rowopt}
+
+\end{lem}
+~\\
+We will provide a short example of the concept for a more intuitive understanding of Lemma \ref{lem:rowopt}:
+\begin{ex}{}~\\
+With $x=23,y=10,z=6$, Lemma \ref{lem:rowopt} gives us that $A_{23,10,6}=\left\{A_{22,10,6}\middle| A_{21,10,6}\right\},$ i.e., we play in the first row.
+\\
+With $x=11,y=10,z=6$, Lemma \ref{lem:rowopt} gives us that $A_{11,10,6}=\left\{A_{11,8,6}\middle| A_{11,9,6}\right\},$ i.e., we play in the second row.
+\\
+With $x=11,y=6,z=6$, Lemma \ref{lem:rowopt} gives us that $A_{11,6,6}=\left\{A_{11,6,4}\middle| A_{11,9,5}\right\},$ i.e., we play in the third row.
+\\
+With $x=5,y=2,z=2$, Lemma \ref{lem:rowopt} gives us that $A_{5,2,2}=\left\{A_{4,2,2}\middle| A_{3,2,2}\right\},$ i.e., we play in the first row.
+\\
+With $x=4,y=2,z=2$, Lemma \ref{lem:rowopt} gives us that $A_{4,2,2}=\left\{A_{4,1,1}\middle| A_{4,2,1}\right\},$ i.e., we play in the second row.
+\end{ex}
+\begin{proof2}{Proof of Lemma \ref{lem:rowopt}}
+Assume Theorem \ref{thm:3rowvalue} holds for all options of a game $A_{x,y,z}$. By Lemma \ref{lem:chessdomopt}, we only need to look at the options when removing maximal elements.
+\\
+We will begin to show when it is better to play in the second and third row, independently of the first row.
+\\
+Assume $y=z$, we then have the following dominating options when playing in the second and third row: $$A_{x,z-1,z-1},A_{x,z-2,z-2},A_{x,z,z-2},A_{x,z,z-1}$$
+We will determine the dominance of the third row over the second by examining the differences between the values of the options, to determine when an option has a value with greater value. Since we have different formulas for different $z$'s, we have to check a combination of the equations on (\ref{eq:3rowvalue}). But they all give the same result, namely the following: 
+\begin{align*}
+\begin{split}
+A_{x,z,z-2}-A_{x,z-1,z-1}&=0\text{ if $z\ge3$}
+\end{split}\\
+\begin{split}
+A_{x,z,z-1}-A_{x,z-2,z-2}&=\left\{
+\begin{array}{ll}
+-(-4)^{-z}&\text{ if $z\ge3$ and $x\ge4$}\\
+2^{-5}&\text{ if $z=3$ and $x=3$}
+\end{array}\right.
+\\
+&>0\text{ if $z$ odd}\\
+&<0\text{ if $z$ even}
+\end{split}
+\end{align*}
+Clearly $A_{x,z-2,z-2},A_{x,z,z-1}$ are options of Left (Right) only if $z$ is odd (even), so $A_{x,z-2,z-2}$ is dominated by $A_{x,z,z-1}$. Moreover, since $A_{x,z-1,z-1}=A_{x,z,z-2}$, then $A_{x,z-1,z-1}$ is dominated by $A_{x,z,z-2}$ (and vice versa). These results are evidently independent of $x$, so we have that playing in the second row is always dominated by playing in the third row if $y=z\ge3$.
+\\
+If $y=z=2$ (\ref{eq:3rowvalue}) yields:
+\begin{align*}
+\begin{split}
+A_{x,2,0}-A_{x,1,1}&=2^{-3}\frac{1}{3}\left(-1+(-2)^{-(x-2)}\right)\\
+&\le0\text{ if $x\ge2$}
+\end{split}\\
+\begin{split}
+A_{x,2,1}-A_{x,0,0}&=\left\{
+\begin{array}{ll}
+-2^{-3}&\text{ if $x\ge3$}\\
+-2^{-4}&\text{ if $x=2$}
+\end{array}\right.\\
+&<0
+\end{split}
+\end{align*}
+As we can see, this is consistent with Lemma \ref{lem:rowopt} (v). Moreover, if $y=z=1$, then Left only has the option to remove the element in the third row, and Right only has the option to remove the element in the second row, which is consistent with Lemma \ref{lem:rowopt} (iv).
+\\
+If we instead have $y>z$, we have the following dominating options when playing in the second or third row:
+\begin{align*}
+\left\{
+\begin{array}{l l}
+ A_{x,y-1,z},A_{x,y-2,z},A_{x,y,z-2},A_{x,y,z-1}& \text{ if $y\ge z+2$}\\
+ ~&~\\
+ A_{x,z-1,z-1},A_{x,z,z},A_{x,z+1,z-2},A_{x,z+1,z-1}& \text{ if $y=z+1$}
+\end{array}\right.
+\end{align*}
+If $y\ge z+2$ and $z\ge3$ we have the following possible value differences between the options:
+\begin{align*}
+\begin{split}
+A_{x,y-1,z}-A_{x,y,z-2}&=\left\{
+\begin{array}{ll}
+\frac{1}{3}(-2)^{-x}-\frac{5}{3}(-2)^{-(y+3)}-2^{-6}&\text{ if $x>y,z=3$ and $y$ is even}\\
+-2^{-(y+3)}-2^{-6}&\text{ if $x=y,z=3$ and $x$ is odd}\\
+2^{-z}\left(-(-2)^{-y}+(-2)^{-z}\right)&\text{ othwerwise}
+\end{array}\right.\\
+&>0\text{ if $y>z$ and $z$ is even}\\
+&<0\text{ if $y>z$ and $z$ is odd}
+\end{split}\\
+\begin{split}
+A_{x,y-1,z}-A_{x,y,z-1}&=2^{-z}\frac{1}{3}\left(-2(-2)^{-y}-(-2)^{-z}\right)\\
+&\ge0\text{ if $y>z$ and $z$ is odd}\\
+&\le0\text{ if $y>z$ and $z$ is even}
+\end{split}\\
+\begin{split}
+A_{x,y-2,z}-A_{x,y,z-2}&=\left\{
+\begin{array}{ll}
+\frac{1}{3}(-2)^{-x}-\frac{1}{3}(-2)^{-(y+2)}-2^{-6}&\text{ if $x>y,z=3$ and $y$ is even}\\
+-2^{-(y+2)}-2^{-6}&\text{ if $x=y,z=3$ and $x$ is odd}\\
+(-4)^{-z}&\text{ othwerwise}
+\end{array}\right.\\
+&>0\text{ if $z$ even}\\
+&<0\text{ if $z$ odd}
+\end{split}\\
+\begin{split}
+A_{x,y-2,z}-A_{x,y,z-1}&=2^{-z}\frac{1}{3}\left((-2)^{-y}-(-2)^{-z}\right)\\
+&>0\text{ if $y>z$ and $z$ odd}\\
+&<0\text{ if $y>z$ and $z$ even}
+\end{split}
+\end{align*}
+Similarly, for $z<3$ we also have
+\begin{align*}
+A_{x,y-1,2}-A_{x,y,0}&>0\\
+A_{x,y-2,2}-A_{x,y,0}&>0\\
+A_{x,y-2,2}-A_{x,y,1}&\le0\\
+A_{x,y-1,2}-A_{x,y,1}&<0\\
+A_{x,y-1,1}-A_{x,y,0}&>0\\
+A_{x,y-2,1}-A_{x,y,0}&>0
+\end{align*}
+As $A_{x,y-1,z},A_{x,y,z-2}$ are options of Left (Right) only if $y,z$ are even (odd) and $A_{x,y-2,z},A_{x,y,z-1}$ are options of Left (Right) only if $y,z$ are odd (even), then clearly $A_{x,y,z-2},A_{x,y,z-1}$ are dominated by $A_{x,y-1,z},A_{x,y-2,z}$. Again, these results where independent of $x$.
+\\
+Moreover, if $y=z+1$ and $z\ge2$, we have the following differences:
+\begin{align*}
+\begin{split}
+A_{x,z-1,z-1}-A_{x,z+1,z-2}&=\left\{
+\begin{array}{ll}
+(-4)^{-z}&\text{ if $z\ge4$}\\
+\frac{1}{3}\left((-2)^{-x}-2^{-4}\right)&\text{ if $z=3$ and $x>y$}\\
+-2^{-6}&\text{ if $z=3$ and $x=y$}\\
+-2^{-2}\frac{1}{3}\left(-7(-2)^{-x}+9\cdot2^{-2}\right)&\text{ if $z=2$}
+\end{array}\right.\\
+&>0\text{ if $z$ even}\\
+&<0\text{ if $z$ odd}
+\end{split}\\
+\begin{split}
+A_{x,z,z}-A_{x,z+1,z-1}&=0\text{ if $z\ge2$}
+\end{split}
+\end{align*}
+If $z=1$ and $y=z+1$, we have the value differences
+\begin{align*}
+\begin{split}
+A_{x,y-1,z}-A_{x,y,z-2}=A_{x,1,1}-A_{x,2,0}=&2^{-1}\frac{1}{3}\left(-(-2)^{-x}+2^{-2}\right)\\
+&\ge0
+\end{split}
+\end{align*}
+
+Again, we can see that $A_{x,z-1,z-1},A_{x,z+1,z-2}$ are options of Left (Right) only if $z$ is even (odd) and $A_{x,z,z},A_{x,z+1,z-1}$ are options of Left (Right) only if $z$ is odd (even), so clearly $A_{x,z+1,z-2},A_{x,z+1,z-1}$ are dominated by $A_{x,z-1,z-1},A_{x,z,z}$.
+\\
+Lastly, if $z=0$, there are no option to play in the third row, so playing in the second row will always be a better strategy. 
+\\
+Since these scenarios are independent of $x$, we can conclude that playing in the second row is always dominated by playing in the third row if $y>z$ and $z\ge0$, which is consistent with the lemma.
+\\\\
+Now we only need to deduce when to play in the first row, and when to play in the second or third row. Assume that $x\ge y+2$. For $y\ge3,z\ge2$ we then have the following dominating options:
+\begin{align*}
+&A_{x-2,y,z},A_{x-1,y,z},A_{x,y-1,z},A_{x,y-2,z}&&\text{if $y\ge z+2$}\\
+&A_{x-2,y,y-1},A_{x-1,y,y-1},A_{x,y-1,y-1},A_{x,y-2,y-2}&&\text{if $y=z+1$}\\
+&A_{x-2,y,y},A_{x-1,y,y},A_{x,y,y-2},A_{x,y,y-1}&&\text{if $y=z$}
+\end{align*}
+If we compare the values of the options for the three scenarios, it turns out that they have the same differences:
+\begin{align*}
+\begin{split}
+A_{x-2,y,z}-A_{x,y-1,z}&=A_{x-2,y,y-1}-A_{x,y-1,y-1}=A_{x-2,y,y}-A_{x,y,y-2}\\
+&=-2^{-x}(-1)^x+2^{-(y+z+1)}(-1)^y\\
+&\ge0\text{ if }
+\left\{
+\begin{array}{l}
+x\ge y+z+1\text{ and $y$ even}\\
+x\le y+z+1\text{ and $x$ odd}
+\end{array}\right.\\
+&\le0\text{ if }
+\left\{
+\begin{array}{l}
+x\ge y+z+1\text{ and $y$ odd}\\
+x\le y+z+1\text{ and $x$ even}
+\end{array}\right.
+\end{split}\\
+\begin{split}
+A_{x-1,y,z}-A_{x,y-2,z}&=A_{x-1,y,y-1}-A_{x,y-2,y-2}=A_{x-1,y,y}-A_{x,y,y-1}\\
+&=2^{-x}(-1)^x-2^{-(y+z+1)}(-1)^y\\
+&\ge0\text{ if }
+\left\{
+\begin{array}{l}
+x\ge y+z+1\text{ and $y$ odd}\\
+x\le y+z+1\text{ and $x$ odd}
+\end{array}\right.\\
+&\le0\text{ if }
+\left\{
+\begin{array}{l}
+x\ge y+z+1\text{ and $y$ even}\\
+x\le y+z+1\text{ and $x$ even}
+\end{array}\right.
+\end{split}\\
+\begin{split}
+A_{x-2,y,z}-A_{x,y-2,z}&=A_{x-2,y,y-1}-A_{x,y-2,y-2}=A_{x-2,y,y}-A_{x,y,y-1}\\
+&=-2^{-x}(-1)^x-2^{-(y+z+1)}(-1)^y\\
+&\ge0\text{ if }
+\left\{
+\begin{array}{l}
+x\ge y+z+1\text{ and $y$ even}\\
+x\le y+z+1\text{ and $x$ even}
+\end{array}\right.\\
+&\le0\text{ if }
+\left\{
+\begin{array}{l}
+x\ge y+z+1\text{ and $y$ odd}\\
+x\le y+z+1\text{ and $x$ odd}
+\end{array}\right.
+\end{split}\\
+\begin{split}
+A_{x-1,y,z}-A_{x,y-1,z}&=A_{x-1,y,y-1}-A_{x,y-1,y-1}=A_{x-1,y,y}-A_{x,y,y-2}\\
+&=2^{-x}(-1)^x+2^{-(y+z+1)}(-1)^y\\
+&\ge0\text{ if }
+\left\{
+\begin{array}{l}
+x\ge y+z+1\text{ and $y$ odd}\\
+x\le y+z+1\text{ and $x$ even}
+\end{array}\right.\\
+&\le0\text{ if }
+\left\{
+\begin{array}{l}
+x\ge y+z+1\text{ and $y$ even}\\
+x\le y+z+1\text{ and $x$ odd}
+\end{array}\right.
+\end{split}
+\end{align*}
+Obviously $A_{x-2,y,z},A_{x,y-1,z},A_{x,y-1,y-1},A_{x,,y,y-2}$ are options of Left (Right) only if $x,y$ are even (odd) and $A_{x-1,y,z},A_{x,y-2,z},A_{x,y-2,y-2},A_{x,y,y-1}$ are options of Left (Right) only if $x,y$ are odd (even). We can therefore clearly see that $A_{x-2,y,z},A_{x-1,y,z}$ dominate over $A_{x,y-1,z},A_{x,y-2,z},A_{x,y-1,y-1}, A_{x,y-2,y-2},A_{x,y,y-2},A_{x,y,y-1}$ if $x\ge y+z+1$ and reversely if $x\le y+z+1$. In other words, when $x\ge y+2,y\ge3,z\ge2$, playing in the first row is the dominating option if $x\ge y+z+1$ and playing in the second or third row is the dominating option if $x<y+z+1$, which is consistent with the lemma.
+\\
+What if $x< y+2$? Since any game option $A_{x',y,z}$ where $x'< y+2$ is an option of any option $A_{x,y,z}$ where $x\ge y+2$, then $A_{x',y,z}$ must be dominated by $A_{x,y,z}$. With $z\ge2$, all $A_{x',y,z}$ such that $x'< y+2$ are options of some $A_{x,y,z},x\ge y+2$. Therefore the above is also valid for $x< y+2$. That is, when $y\ge3,z\ge2$, playing in the first row dominates by the option of playing in the second or third row if $x\ge y+z+1$ and playing in the second or third row dominates playing in the first row if $x<y+z+1$.
+\\
+Now, assume $y=z=2$. The game is then given by 
+\begin{align*}
+A_{x,y,z}=A_{x,2,2}=\left\{
+\begin{array}{ll}
+\left\{A_{x-2,2,2},A_{x,1,1}\middle|A_{x-1,2,2},A_{x,2,1}\right\}&\text{if $x\ge y+2$ and $x$ is even}\\
+\left\{A_{x-1,2,2},A_{x,1,1}\middle|A_{x-2,2,2},A_{x,2,1}\right\}&\text{if $x\ge y+2$ and $x$ is odd}\\
+\left\{A_{2,2,2},A_{3,1,1}\middle|A_{1,1,1},A_{3,2,1}\right\}&\text{if $x=3$}\\
+\left\{A_{0,0,0},A_{2,1,1}\middle|A_{1,1,1},A_{2,2,1}\right\}&\text{if $x=2$}
+\end{array}\right.
+\end{align*} 
+Clearly, the first game is only valid if $x\ge4$ and the second only if $x\ge5$. We therefore only need to examine these options for these values. The possible value differences between the dominating options are then:
+\begin{align*}
+\begin{split}
+A_{x-2,2,2}-A_{x,1,1}&=-2^{-x}(-1)^x+2^{-5}\\
+&\ge0\text{ if $x\ge5=y+z+1$}\\
+&\le0\text{ if $x=4$}
+\end{split}\\
+\begin{split}
+A_{x-1,2,2}-A_{x,2,1}&=2^{-5}\frac{1}{3}\left(-5-(-2)^{7-x}\right)\\
+&>0\text{ if $x=4$}\\
+&<0\text{ if $x\ge5=y+z+1$}
+\end{split}\\
+\begin{split}
+A_{x-2,2,2}-A_{x,2,1}&=2^{-5}\frac{1}{3}\left(-5-(-2)^{6-x}\right)\\
+&<0\text{ if $x\ge5=y+z+1$}
+\end{split}\\
+\begin{split}
+A_{x-1,2,2}-A_{x,1,1}&=2^{-x}(-1)^x+2^{-5}\\
+&\ge0\text{ if $x\ge5=y+z+1$}
+\end{split}\\
+\begin{split}
+A_{2,2,2}-A_{3,1,1}&=-\frac{3}{32}\\
+&<0
+\end{split}\\
+\begin{split}
+A_{1,1,1}-A_{3,2,1}&=\frac{1}{8}\\
+&>0
+\end{split}\\
+\begin{split}
+A_{0,0,0}-A_{2,1,1}&=-\frac{3}{8}\\
+&<0
+\end{split}\\
+\begin{split}
+A_{1,1,1}-A_{2,2,1}&=\frac{5}{16}\\
+&>0
+\end{split}
+\end{align*}
+These differences yields that playing in the first row is the dominating option if $x\ge y+z+1$ and playing in the third row is the dominating option if $x<y+z+1$, which is consistent with the lemma.
+\\
+Similarly, for $z=1$, this comparison methodology yields that playing in the first row is the dominating option if $x\ge y+z+1$ and it is dominated by playing in the second or third row if $x<y+z+1$.
+\\
+Moreover, from the proof of Theorem \ref{thm:2rowvalue}, we can conclude that playing in the first row is the dominating option if $x>y$, and playing in the second row is the dominating strategy if $x=y$. Since here, $z=0$, this is the same as saying that playing in the first row is the dominating strategy if $x\ge y+z+1$ and playing in the second row is dominating if $x<y+z+1$. 
+\\
+All this yields that, for any $x,y,z$, the dominating strategy is to play in the first row if $x\ge y+z+1$ and in the second or third row if $x<y+z+1$.
+\\
+This completes the proof.
+\end{proof2}
+~\\
+Now we can use Lemma \ref{lem:rowopt} to prove Theorem \ref{thm:3rowvalue}. 
+This will be done with a proof using Conway Induction (see Theorem \ref{thm:conind}). We do this by assuming that Theorem \ref{thm:3rowvalue} holds for all options of an arbitrary game $A_{x,y,z}$ and then showing that it holds for the game $A_{x,y,z}$ itself.
+
+\begin{proof2}{Proof of Theorem \ref{thm:3rowvalue}}
+Assume that Theorem \ref{thm:3rowvalue} holds for all options of the game $A_{x,y,z}$. We can then use the result of Lemma \ref{lem:rowopt} to limit the number of options to one for each player. 
+%In other words, from Lemma \ref{lem:rowopt}, we have:
+%\begin{equation*}
+%A_{x,y,z}=\left\{
+%\begin{array}{l l}
+%\left.\begin{array}{l l}
+%\left\{A_{x-2,y,z}\middle|A_{x-1,y,z}\right\}\\
+%\text{or}\\
+%\left\{A_{x-1,y,z}\middle|A_{x-2,y,z}\right\}
+%\end{array}\right\}&\text{ if $x\ge y+z+1$}\\
+%~\\
+%\left.\begin{array}{l l}
+%\left\{A_{x,y-1,z}\middle|A_{x,y-2,z}\right\}\\
+%\text{or}\\
+%\left\{A_{x,y-2,z}\middle|A_{x,y-1,z}\right\}
+%\end{array}\right\}&\text{ if $x\le y+z+1$ and $y\ge z+2$}\\
+%~\\
+%\left.\begin{array}{l l}
+%\left\{A_{x,z-1,z-1}\middle|A_{x,z,z}\right\}\\
+%\text{or}\\
+%\left\{A_{x,z,z}\middle|A_{x,z-1,z-1}\right\}
+%\end{array}\right\}&\text{ if $x\le y+z+1$ and $y=z+1$}\\
+%~\\
+%\left.\begin{array}{l l}
+%\left\{A_{x,y,z-2}\middle|A_{x,y,z-1}\right\}\\
+%\text{or}\\
+%\left\{A_{x,y,z-1}\middle|A_{x,y,z-2}\right\}
+%\end{array}\right\}&\text{ if $x\le y+z+1,y=z$ and $z\ge3$}\\
+%~\\
+%\left\{A_{x,1,1}\middle|A_{x,2,1}\right\}&\text{ if $x\le 5$ and $y=z=2$}\\
+%~\\
+%\left\{A_{x,1,0}\middle|A_{x,0,0}\right\}&\text{ if $x\le 3$ and $y=z=1$}
+%\end{array}\right.
+%\end{equation*}
+Using Theorem \ref{thm:number}, we then just need to show for all of these that the value of $A_{x,y,z}$ computed with (\ref{eq:3rowvalue}) of Theorem \ref{thm:3rowvalue} is the same as the \emph{simplest number} in between the values of the deduced dominating game options of the game.
+\\\\
+Assume $x\ge y+z+1$ and $x\ge y+2$. We then have
+\begin{equation*}
+A_{x,y,z}=\left\{
+\begin{array}{l l}
+\left\{A_{x-2,y,z}\middle|A_{x-1,y,z}\right\}&\text{ if $x$ is even,}\\
+~&~\\
+\left\{A_{x-1,y,z}\middle|A_{x-2,y,z}\right\}&\text{ if $x$ is odd.}
+\end{array}\right.
+\end{equation*}
+This yields that $A_{x,y,z}$ must be the simplest number between $A_{x-2,y,z}$ and $A_{x-1,y,z}$. We can compare these options and the game by comparing their computed values. For $z\ge2$, these options have the value differences
+\begin{align*}
+A_{x-2,y,z}-A_{x-1,y,z}&=2^{-x}\left(-2(-1)^x\right),\\
+A_{x-2,y,z}-A_{x,y,z}&=2^{-x}\left(-(-1)^x\right),\\
+A_{x,y,z}-A_{x-1,y,z}&=2^{-x}\left(-(-1)^x\right).
+\end{align*}
+Clearly the proposed value for $A_{x,y,z}$ is the only number with a numerator between those of $A_{x-2,y,z}$ and $A_{x-1,y,z}$ over the same denominator. Definition \ref{def:simpnum} yields that this then must be the simplest number.
+\\
+Now, assume $x<y+z+1$ and $y>z$. The game is then
+\begin{align*}
+A_{x,y,z}=\left\{
+\begin{array}{l l}
+\left.\begin{array}{l l}
+\left\{A_{x,y-1,z}\middle|A_{x,y-2,z}\right\}&\text{ if $y$ is even}\\
+\left\{A_{x,y-2,z}\middle|A_{x,y-1,z}\right\}&\text{ if $y$ is odd}
+\end{array}\right\}&\text{ if $y\ge z+2$,}\\
+~\\
+\left.\begin{array}{l l}
+\left\{A_{x,y-1,y-1}\middle|A_{x,y-2,y-2}\right\}&\text{ if $y$ is even}\\
+\left\{A_{x,y-2,y-2}\middle|A_{x,y-1,y-1}\right\}&\text{ if $y$ is odd}
+\end{array}\right\}&\text{ if $y=z+1$.}\\
+\end{array}
+\right.
+\end{align*}
+If we compare the values of these games when $z\ge2$ and $x\ge4$ we have the differences
+\begin{align*}
+A_{x,y-1,z}-A_{x,y-2,z}&=A_{x,y-1,y-1}-A_{x,y-2,y-2}=\\
+&=2^{-(y+z+1)}\left(-2(-1)^y\right)\\
+A_{x,y-1,z}-A_{x,y,z}&=A_{x,y-1,y-1}-A_{x,y,y-1}=\\
+&=2^{-(y+z+1)}\left(-(-1)^y\right)\\
+A_{x,y,z}-A_{x,y-2,z}&=A_{x,y,y-1}-A_{x,y-2,y-2}=\\
+&=2^{-(y+z+1)}\left(-(-1)^y\right)
+\end{align*}
+Similarly, if $z\ge2$ and $x<4$, i.e., if $A_{x,y,z}=A_{3,3,2}$, we have 
+\begin{align*}
+A_{3,2,2}-A_{3,1,1}&=\frac{2}{32}\\
+A_{3,2,2}-A_{3,3,2}&=\frac{1}{32}\\
+A_{3,3,2}-A_{3,1,1}&=\frac{1}{32}
+\end{align*}
+Again, we can see that the proposed value for $A_{x,y,z}$ is the simplest number between $A_{x,y-1,z}$ and $A_{x,y-2,z}$ and $A_{x,y-1,y-1}$ and $A_{x,y-2,y-2}$. 
+Now, assume $y=z$. Assuming $z\ge3$ we then have the game
+\begin{align*}
+A_{x,y,z}=\left\{
+\begin{array}{l l}
+\left\{A_{x,y,y-2}\middle|A_{x,y,y-1}\right\}&\text{ if $y$ is even,}\\
+~\\
+\left\{A_{x,y,y-1}\middle|A_{x,y,y-2}\right\}&\text{ if $y$ is odd.}
+\end{array}
+\right.
+\end{align*}
+Similarly, these options gives us the value differences
+\begin{align*}
+A_{x,y,y-2}-A_{x,y,y-1}&=2^{-(y+z+1)}\left(-2(-1)^y\right),\\
+A_{x,y,y-2}-A_{x,y,z}&=2^{-(y+z+1)}\left(-(-1)^y\right),\\
+A_{x,y,z}-A_{x,y,y-1}&=2^{-(y+z+1)}\left(-(-1)^y\right).
+\end{align*}
+As before, this clearly yields that the proposed value of $A_{x,y,z}$ is the simplest value between its dominating options if $x<y+z+1,y=z$ and $z\ge3$.
+\\
+If $y=z=2$ and $x<y+z+1$, then $x\in \{2,3,4\}$. Using Lemma \ref{lem:rowopt}, we have:
+\begin{align*}
+A_{x,y,z}=\left\{
+\begin{array}{lll}
+\left\{A_{4,1,1}|A_{4,2,1}\right\}=\left\{\frac{7}{16}\middle|\frac{1}{2}\right\}&=\frac{15}{32}&\text{ if $x=4$}\\
+\left\{A_{3,1,1}|A_{3,2,1}\right\}=\left\{\frac{1}{2}\middle|\frac{5}{8}\right\}&=\frac{9}{16}&\text{ if $x=3$}\\
+\left\{A_{2,1,1}|A_{2,2,1}\right\}=\left\{\frac{3}{8}\middle|\frac{7}{16}\right\}&=\frac{13}{32}&\text{ if $x=2$}
+\end{array}\right.
+\end{align*}
+As these all correspond to the formula proposed values, this concludes that the formula works for $x\ge y+z+1$ if $x\ge y+2$ and $z\ge2$, and for $x<y+z+1$ if $z\ge2$. What if $x< y+2$?
+\\
+If $z\ge2$, then $y+z+1>y+2$. So if $x< y+2$, then $x<y+z+1$ and hence, the dominating strategy is not to play in the first row. The above therefore holds for $x< y+2$ as well, and we can conclude that the formula works for all $A_{x,y,z}$ with $z\ge2$.
+\\
+What if $z<2$, i.e., $z=1$ or $z=0$? The case when $z=0$ follows from Theorem \ref{thm:2rowvalue}. Let us therefore assume that $z=1$.
+\\
+Assume $x\ge y+2$. Then $x\ge y+2=y+z+1$, so the dominating strategy will be moving in the first row. This yields the game 
+\begin{align*}
+A_{x,y,z}=\left\{
+\begin{array}{l l}
+\left\{A_{x-2,y,1}\middle|A_{x-1,y,1}\right\}&\text{ if $x$ is even,}\\
+~\\
+\left\{A_{x-1,y,1}\middle|A_{x-2,y,1}\right\}&\text{ if $x$ is odd.}
+\end{array}
+\right.
+\end{align*}
+If we again compare these options, this yields the differences:
+\begin{align*}
+A_{x-2,y,1}-A_{x-1,y,1}&=\left\{
+\begin{array}{ll}
+2^{-(x-1)}\left(-2(-1)^x\right)&\text{ if $x\ge y+3$ and $y$ is even}\\
+2^{-x}\left(-2(-1)^x\right)&\text{ if $x\ge y+3$ and $y$ is odd}\\
+2^{-x}\left(-3(-1)^x\right)&\text{ if $x=y+2$}
+\end{array}\right.\\
+A_{x-2,y,1}-A_{x,y,1}&=\left\{
+\begin{array}{ll}
+2^{-(x-1)}\left(-(-1)^x\right)&\text{ if $x\ge y+3$ and $y$ is even}\\
+2^{-x}\left(-(-1)^x\right)&\text{ if $x\ge y+3$ and $y$ is odd}\\
+2^{-x}\left(-\frac{3-(-1)^x}{2}(-1)^x\right)&\text{ if $x=y+2$}
+\end{array}\right.\\
+A_{x-1,y,1}-A_{x-2,y,1}&=\left\{
+\begin{array}{ll}
+2^{-(x-1)}\left(-(-1)^x\right)&\text{ if $x\ge y+3$ and $y$ is even}\\
+2^{-x}\left(-(-1)^x\right)&\text{ if $x\ge y+3$ and $y$ is odd}\\
+2^{-x}\left(-\frac{3+(-1)^x}{2}(-1)^x\right)&\text{ if $x=y+2$}
+\end{array}\right.
+\end{align*}
+Again, we can clearly see that $A_{x,y,z}$ is the simplest number in between $A_{x-2,y,1}$ and $A_{x-1,y,1}$, if $z=1$ and $x\ge y+3$. If $x=y+2$, from above, the proposed value of $A_{x,y,z}=A_{x,x-2,1}$ is between the two dominating options. Since the proposed value $A_{x,x-2,1}=\frac{1}{2}$ is the simplest possible number between these options, then the proposed value for $A_{x,y,z}$ is the simplest number between its dominating options if $x\ge y+2$ and $z=1$.
+\\
+If $x< y+2$, then $x<y+2=y+z+1$. The dominating strategy will then to play in the second or third row. Assuming $y\ge z+2$, we have the game:
+\begin{align*}
+A_{x,y,z}=\left\{
+\begin{array}{l l}
+\left.
+\begin{array}{ll}
+\left\{A_{x,x-3,1}\middle|A_{x,x-2,1}\right\}&\text{ if $x$ is even}\\
+~\\
+\left\{A_{x,x-2,1}\middle|A_{x,x-3,1}\right\}&\text{ if $x$ is odd}
+\end{array}\right\}\text{if $x=y+1$}\\
+~\\
+\left.
+\begin{array}{ll}
+\left\{A_{x,x-1,1}\middle|A_{x,x-2,1}\right\}&\text{ if $x$ is even}\\
+~\\
+\left\{A_{x,x-2,1}\middle|A_{x,x-1,1}\right\}&\text{ if $x$ is odd}
+\end{array}\right\}\text{if $x=y$}
+\end{array}
+\right.
+\end{align*}
+Comparing these options as before yields:
+\begin{align*}
+A_{x,x-3,1}-A_{x,x-2,1}&=\left\{
+\begin{array}{ll}
+2^{-(x+1)}\left(-2(-1)^x\right)&\text{ if $x$ is even}\\
+2^{-x}\left(-2(-1)^x\right)&\text{ if $x$ is odd}
+\end{array}\right.\\
+A_{x,x-3,1}-A_{x,x-1,1}&=\left\{
+\begin{array}{ll}
+2^{-(x+1)}\left(-(-1)^x\right)&\text{ if $x$ is even}\\
+2^{-x}\left(-(-1)^x\right)&\text{ if $x$ is odd}
+\end{array}\right.\\
+A_{x,x-1,1}-A_{x,x-2,1}&=\left\{
+\begin{array}{ll}
+2^{-(x+1)}\left(-(-1)^x\right)&\text{ if $x$ is even}\\
+2^{-x}\left(-(-1)^x\right)&\text{ if $x$ is odd}
+\end{array}\right.\\
+~\\
+A_{x,x-1,1}-A_{x,x-2,1}&=\left\{
+\begin{array}{ll}
+2^{-(x+2)}\left(-2(-1)^x\right)&\text{ if $x$ is even}\\
+2^{-(x+1)}\left(-2(-1)^x\right)&\text{ if $x$ is odd}
+\end{array}\right.\\
+A_{x,x-1,1}-A_{x,x,1}&=\left\{
+\begin{array}{ll}
+2^{-(x+2)}\left(-(-1)^x\right)&\text{ if $x$ is even}\\
+2^{-(x+1)}\left(-(-1)^x\right)&\text{ if $x$ is odd}
+\end{array}\right.\\
+A_{x,x,1}-A_{x,x-2,1}&=\left\{
+\begin{array}{ll}
+2^{-(x+2)}\left(-(-1)^x\right)&\text{ if $x$ is even}\\
+2^{-(x+1)}\left(-(-1)^x\right)&\text{ if $x$ is odd}
+\end{array}\right.
+\end{align*}
+Just as before, this yields that the proposed value of $A_{x,y,z}$ in fact is the simplest number between its dominated options when $z=1,y\ge z+2$ and $x< y+2$.
+\\
+Finally, we have the cases when $z=1, y< z+2$ and $x< y+2$, i.e., $$A_{x,y,z}:(x,y,z)\in\{(3,2,1),(2,1,1),(2,2,1),(1,1,1)\}.$$ 
+Again, since $x< y+2=y+z+1$, the dominating strategy will be to move in the second or third row. This yields:
+\begin{align*}
+A_{3,2,1}&=\left\{A_{3,1,1}\middle|A_{3,0,0}\right\}=\left\{\frac{1}{2}\middle|\frac{3}{4}\right\}=\frac{5}{8}\\
+A_{2,1,1}&=\left\{A_{2,1,0}\middle|A_{2,0,0}\right\}=\left\{\frac{1}{4}\middle|\frac{1}{2}\right\}=\frac{3}{8}\\
+A_{2,2,1}&=\left\{A_{2,1,1}\middle|A_{2,0,0}\right\}=\left\{\frac{3}{8}\middle|\frac{1}{2}\right\}=\frac{7}{16}\\
+A_{1,1,1}&=\left\{A_{1,1,0}\middle|A_{1,0,0}\right\}=\left\{\frac{1}{2}\middle|1\right\}=\frac{3}{4}
+\end{align*}
+Since all of these are equal to the formula proposed values, then this yields that the formula is valid for any $x,y,z\ge0$. This completes the proof of Theorem \ref{thm:3rowvalue}.
+\end{proof2}

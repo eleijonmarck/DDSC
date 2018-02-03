@@ -1,0 +1,847 @@
+
+
+Energy Disaggregation via DiscriminativeSparse Coding
+
+J. Zico KolterComputer Science and
+Artificial Intelligence LaboratoryMassachusetts Institute of Technology
+
+Cambridge, MA 02139
+kolter@csail.mit.edu
+
+Siddarth Batra, Andrew Y. NgComputer Science Department
+
+Stanford UniversityStanford, CA 94305
+fsidbatra,angg@cs.stanford.edu
+
+Abstract
+Energy disaggregation is the task of taking a whole-home energy signal and sep-arating it into its component appliances. Studies have shown that having devicelevel energy information can cause users to conserve significant amounts of en-ergy, but current electricity meters only report whole-home data. Thus, developing
+algorithmic methods for disaggregation presents a key technical challenge in theeffort to maximize energy conservation. In this paper, we examine a large scale
+energy disaggregation task, and apply a novel extension of sparse coding to thisproblem. In particular, we develop a method, based upon structured prediction,
+for discriminatively training sparse coding algorithms specifically to maximizedisaggregation performance. We show that this significantly improves the performance of sparse coding algorithms on the energy task and illustrate how thesedisaggregation results can provide useful information about energy usage.
+
+1 Introduction
+Energy issues present one of the largest challenges facing our society. The world currently consumesan average of 16 terawatts of power, 86% of which comes from fossil fuels [28]; without any effort
+
+to curb energy consumption or use different sources of energy, most climate models predict that theearth's temperature will increase by at least 5 degrees Fahrenheit in the next 90 years [1], a change
+that could cause ecological disasters on a global scale. While there are of course numerous facets tothe energy problem, there is a growing consensus that many energy and sustainability problems are
+fundamentally informatics problems, areas where machine learning can play a significant role.
+This paper looks specifically at the task of energy disaggregation, an informatics task relating toenergy efficiency. Energy disaggregation, also called non-intrusive load monitoring [11], involves
+
+taking an aggregated energy signal, for example the total power consumption of a house as read byan electricity meter, and separating it into the different electrical appliances being used. Numerous
+studies have shown that receiving information about ones energy usage can automatically induceenergy-conserving behaviors [6, 19], and these studies also clearly indicate that receiving appliancespecific information leads to much larger gains than whole-home data alone ([19] estimates thatappliance-level data could reduce consumption by an average of 12% in the residential sector). In
+the United States, electricity constitutes 38% of all energy used, and residential and commercialbuildings together use 75% of this electricity [28]; thus, this 12% figure accounts for a sizable
+amount of energy that could potentially be saved. However, the widely-available sensors that provideelectricity consumption information, namely the so-called "Smart Meters" that are already becoming
+ubiquitous, collect energy information only at the whole-home level and at a very low resolution(typically every hour or 15 minutes). Thus, energy disaggregation methods that can take this wholehome data and use it to predict individual appliance usage present an algorithmic challenge whereadvances can have a significant impact on large-scale energy efficiency issues.
+
+1
+
+Energy disaggregation methods do have a long history in the engineering community, includingsome which have applied machine learning techniques -- early algorithms [11, 26] typically looked
+for "edges" in power signal to indicate whether a known device was turned on or off; later workfocused on computing harmonics of steady-state power or current draw to determine more complex
+device signatures [16, 14, 25, 2]; recently, researchers have analyzed the transient noise of an elec-trical circuit that occurs when a device changes state [15, 21]. However, these and all other studies
+we are aware of were either conducted in artificial laboratory environments, contained a relativelysmall number of devices, trained and tested on the same set of devices in a house, and/or used custom hardware for very high frequency electrical monitoring with an algorithmic focus on "eventdetection" (detecting when different appliances were turned on and off). In contrast, in this paper
+we focus on disaggregating electricity using low-resolution, hourly data of the type that is readilyavailable via smart meters (but where most single-device "events" are not apparent); we specifically
+look at the generalization ability of our algorithms for devices and homes unseen at training time;and we consider a data set that is substantially larger than those previously considered, with 590
+homes, 10,165 unique devices, and energy usage spanning a time period of over two years.
+The algorithmic approach we present in this paper builds upon sparse coding methods and recentwork in single-channel source separation [24, 23, 22]. Specifically, we use a sparse coding algorithm
+
+to learn a model of each device's power consumption over a typical week, then combine theselearned models to predict the power consumption of different devices in previously unseen homes,
+using their aggregate signal alone. While energy disaggregation can naturally be formulated as sucha single-channel source separation problem, we know of no previous application of these methods
+to the energy disaggregation task. Indeed, the most common application of such algorithm is audiosignal separation, which typically has very high temporal resolution; thus, the low-resolution energy
+disaggregation task we consider here poses a new set of challenges for such methods, and existingapproaches alone perform quite poorly.
+
+As a second major contribution of the paper, we develop a novel approach for discriminatively train-ing sparse coding dictionaries for disaggregation tasks, and show that this significantly improves
+performance on our energy domain. Specifically, we formulate the task of maximizing disaggrega-tion performance as a structured prediction problem, which leads to a simple and effective algorithm
+for discriminatively training such sparse representation for disaggregation tasks. The algorithm issimilar in spirit to a number of recent approaches to discriminative training of sparse representations
+[12, 17, 18]. However, these past works were interested in discriminatively training sparse cod-ing representation specifically for classification tasks, whereas we focus here on discriminatively
+training the representation for disaggregation tasks, which naturally leads to substantially differentalgorithmic approaches.
+
+2 Discriminative Disaggregation via Sparse Coding
+We begin by reviewing sparse coding methods and their application to disaggregation tasks. For con-creteness we use the terminology of our energy disaggregation domain throughout this description,
+
+but the algorithms can apply equally to other domains. Formally, assume we are given k differ-ent classes, which in our setting corresponds to device categories such as televisions, refrigerators,
+heaters, etc. For every i = 1; : : : ; k, we have a matrix X\Gamma  2 RT \Theta m where each column of X\Gamma contains a week of energy usage (measured every hour) for a particular house and for this particular
+
+type of device. Thus, for example, the jth column of X\Delta , which we denote x(\Lambda )\Delta  , may contain weekly
+energy consumption for a refrigerator (for a single week in a single house) and x(\Lambda )\Xi  could containweekly energy consumption of a heater (for this same week in the same house). We denote the
+
+aggregate power consumption over all device types as _X j
+
+P\Pi 
+
+\Gamma \Sigma \Delta  X\Gamma  so that the jth column of _X,
+_x(\Lambda ), contains a week of aggregated energy consumption for all devices in a given house. At trainingtime, we assume we have access to the individual device energy readings
+
+X\Delta ; : : : ; X\Pi  (obtained forexample from plug-level monitors in a small number of instrumented homes). At test time, however,
+
+we assume that we have access only to the aggregate signal of a new set of data points _X0 (as wouldbe reported by smart meter), and the goal is to separate this signal into its components,
+
+X0\Delta ; : : : ; X0\Pi .
+
+The sparse coding approach to source separation (e.g., [24, 23]), which forms for the basis for ourdisaggregation approach, is to train separate models for each individual class
+
+X\Gamma , then use thesemodels to separate an aggregate signal. Formally, sparse coding models the
+ith data matrix using theapproximation
+X\Gamma  ss B\Gamma A\Gamma  where the columns of B\Gamma  2 RT\Theta n contain a set of \Upsilon  basis functions, alsocalled the dictionary, and the columns of
+
+A\Gamma  2 Rn\Theta m contain the activations of these basis functions
+
+2
+
+[20]. Sparse coding additionally imposes the the constraint that the activations Ai be sparse, i.e.,that they contain mostly zero entries, which allows us to learn overcomplete representations of the
+data (more basis functions than the dimensionality of the data). A common approach for achievingthis sparsity is to add an
+
+`1 regularization penalty to the activations.
+
+Since energy usage is an inherently non-negative quantity, we impose the further constraint that theactivations and bases be non-negative, an extension known as non-negative sparse coding [13, 7].
+
+Specifically, in this paper we will consider the non-negative sparse coding objective
+
+m\Gamma n\Delta 
+\Theta *0;B\Theta *0
+
+\Lambda 
+2 kXi \Xi  \Pi iAik
+
+\Sigma F + \Upsilon  \Phi 
+
+p;q
+
+(Ai)pq subject to kb\Psi j\Omega i k\Sigma  ^ \Lambda ff fi = \Lambda ff : : : ff fl (1)
+
+where Xi, Ai, and \Pi i are defined as above, \Upsilon  ffi Rffl is a regularization parameter, kYkF j
+(Pp;q ipq)1`\Sigma  is the Frobenius norm, and kyk\Sigma  j (Pp '\Sigma p)1`\Sigma  is the `\Sigma  norm. This optimization
+problem is not jointly convex in Ai and \Pi i, but it is convex in each optimization variable whenholding the other fixed, so a common strategy for optimizing (1) is to alternate between minimizing
+
+the objective over Ai and \Pi i.
+After using the above procedure to find representations Ai and \Pi i for each of the classes _ =
+\Lambda ff : : : ff *, we can disaggregate a new aggregate signal ,X ffi RTssaeoe (without providing the algorithmits individual components), using the following procedure (used by, e.g., [23], amongst others). We
+
+concatenate the bases to form single joint set of basis functions and solve the optimization problem
+
+^A1o/AE = arg m\Gamma n
+
+\Delta OEO/*0
+
+!!
+!!
+!! ,X \Xi  [\Pi 1 " " " \Pi AE]
+
+#
+4
+
+A1.
+
+..
+AAE
+
+3
+5
+
+!!
+!!
+!!
+
+\Sigma 
+
+F
+
++ \Upsilon 
+
+\Phi 
+
+i;p;q
+
+(Ai)pq
+
+j arg m\Gamma n\Delta 
+
+OEO/*0 $
+
+( ,Xff \Pi 1o/AEff A1o/AE)
+
+(2)
+
+where for ease of notation we use A1o/AE as shorthand for A1ff : : : ff AAE, and we abbreviate the opti-mization objective as
+
+$ ( ,Xff \Pi 1o/AEff A1o/AE). We then predict the _th component of the signal to be
+
+^Xi = \Pi i ^Ai: (3)
+
+The intuition behind this approach is that if \Pi i is trained to reconstruct the _th class with smallactivations, then it should be better at reconstructing the
+
+_th portion of the aggregate signal (i.e.,require smaller activations) than all other bases
+\Pi j for fi 6= _. We can evaluate the quality of theresulting disaggregation by what we refer to as the disaggregation error,
+
+E(X1o/AEff \Pi 1o/AE) j
+
+AE\Phi 
+
+i%1
+
+\Lambda 
+2 kXi \Xi  \Pi i
+
+^Aik\Sigma F subject to ^A1o/AE = arg m\Gamma n
+
+\Delta OEO/*0 $
+
+& AE
+
+\Phi 
+
+i%1
+
+Xiff \Pi 1o/AEff A1o/AE
+
+'
+
+ff
+
+(4)which quantifies how accurately we reconstruct each individual class when using the activations
+obtained only via the aggregated signal.
+
+2.1 Structured Prediction for Discriminative Disaggregation Sparse Coding
+An issue with using sparse coding alone for disaggregation tasks is that the bases are not trained tominimize the disaggregation error. Instead, the method relies on the hope that learning basis functions for each class individually will produce bases that are distinct enough to also produce smalldisaggregation error. Furthermore, it is very difficult to optimize the disaggregation error directly
+over \Pi 1o/AE, due to the non-differentiability (and discontinuity) of the argmin operator with a non-negativity constraint. One could imagine an alternating procedure where we iteratively optimize
+over \Pi 1o/AE, ignoring the the dependence of ^A1o/AE on \Pi 1o/AE, then re-solve for the activations ^A1o/AE;
+but ignoring how ^A1o/AE depends on \Pi 1o/AE loses much of the problem's structure and this approachperforms very poorly in practice. Alternatively, other methods (though in a different context from
+
+disaggregation) have been proposed that use a differentiable objective function and implicit differ-entiation to explicitly model the derivative of the activations with respect to the basis functions [4];
+however, this formulation loses some of the benefits of the standard sparse coding formulation, andcomputing these derivatives is a computationally expensive procedure.
+
+3
+
+Instead, we propose in this paper a method for optimizing disaggregation performance based uponstructured prediction methods [27]. To describe our approach, we first define the regularized disaggregation error, which is simply the disaggregation error plus a regularization penalty on ^A1:k,
+
+Ere\Gamma (X1:k; B1:k) j E(X1:k; B1:k) + *
+
+\Delta 
+
+i\Theta p\Theta q
+
+( ^Ai)pq (5)
+
+where ^A is defined as in (2). This criterion provides a better optimization objective for our algorithm,as we wish to obtain a sparse set of coefficients that can achieve low disaggregation error. Clearly,
+the best possible value of ^Ai for this objective function is given by
+
+A?i = a\Lambda g m\Xi n\Pi \Sigma \Upsilon 0 \Phi 2 \Psi Xi \Omega  BiAi\Psi ffF + *
+
+\Delta 
+
+p\Theta q
+
+(Ai)pq; (6)
+
+which is precisely the activations obtained after an iteration of sparse coding on the data matrix Xi.Motivated by this fact, the first intuition of our algorithm is that in order to minimize disaggregation
+error, we can discriminatively optimize the bases B1:k that such performing the optimization (2)produces activations that are as close to
+
+A?1:k as possible. Of course, changing the bases B1:k tooptimize this criterion would also change the resulting optimal coefficients
+
+A?1:k. Thus, the secondintuition of our method is that the bases used in the optimization (2) need not be the same as the bases
+
+used to reconstruct the signals. We define an augmented regularized disaggregation error objective
+
+~Ere\Gamma (X1:k; B1:k; ~B1:k) j
+
+k\Delta 
+
+ifi1
+
+
+
+\Phi 
+
+2 \Psi Xi \Omega  Bi
+
+^Ai\Psi ffF + * \Delta 
+
+p\Theta q
+
+( ^Ai)pq
+
+!
+
+subject to ^A1:k = a\Lambda g m\Xi n\Pi 
+
+flffiffl\Upsilon 0 i
+
+ k\Delta 
+
+ifi1
+
+Xi; ~B1:k; A1:k
+
+!
+
+;
+
+(7)
+
+where the B1:k bases (referred to as the reconstruction bases) are the same as those learned from
+sparse coding while the ~B1:k bases (refereed to as the disaggregation bases) are discriminatively
+optimized in order to move ^A1:k closer to A?1:k, without changing these targets.
+
+Discriminatively training the disaggregation bases ~B1:k is naturally framed as a structured prediction
+task: the input is _X, the multi-variate desired output is A?1:k, the model parameters are ~B1:k, and the
+discriminant function is i ( _X; ~B1:k; A1:k).1 In other words, we seek bases ~B1:k such that (ideally)
+
+A?1:k = a\Lambda g m\Xi n\Pi 
+
+flffiffl\Upsilon 0 i (
+
+_X; ~B1:k; A1:k)` (8)
+
+While there are many potential methods for optimizing such a prediction task, we use a simple
+method based on the structured perceptron algorithm [5]. Given some value of the parameters ~B1:k,
+we first compute ^A using (2). We then perform the perceptron update with a step size ',
+
+~B1:k ^ ~B1:k \Omega  '
+
+*
+
+, ssaeflffiffli ( _X; ~B1:k; A?1:k) \Omega  , ssaeflffiffl i ( _X; ~B1:k; ^A1:k)
+
+oe (9)
+
+or more explicitly, defining ~B =
+
+h
+
+~B1 o/ o/ o/ ~Bk
+
+AE,
+
+A? =
+
+h
+
+A?1T o/ o/ o/ A?1T
+
+AET (and similarly for
+
+^A),
+
+~B ^ ~B \Omega  '
+
+*
+
+( _X \Omega  ~B ^A) ^AT \Omega  ( _X \Omega  ~BA?)A?T
+
+oe
+
+` (10)
+
+To keep ~B1:k in a similar form to B1:k, we keep only the positive part of ~B1:k and we re-normalizeeach column to have unit norm. One item to note is that, unlike typical structured prediction where
+the discriminant is a linear function in the parameters (which guarantees convexity of the problem),here our discriminant is a quadratic function of the parameters, and so we no longer expect to
+necessarily reach a global optimum of the prediction problem; however, since sparse coding itselfis a non-convex problem, this is not overly concerning for our setting. Our complete method for
+discriminative disaggregation sparse coding, which we call DDSC, is shown in Algorithm 1.
+
+1The structured prediction task actually involves OE examples (where OE is the number of columns of O/"), and
+
+the goal is to output the desired activations #$%&'*,-j., for the /th example O/x-j.. However, since the function 3decomposes across the columns of
+
+" and 4, the above notation is equivalent to the more explicit formulation.
+
+4
+
+Algorithm 1 Discriminative disaggregation sparse coding
+Input: data points for each individual source Xi 2 RT \Theta m, \Gamma  = 1; : : : ; k, regularization parameter
+* 2 R+, gradient step size ff 2 R+.
+
+Sparse coding pre-training:
+
+1. Initialize Bi and Ai with positive values and scale columns of Bi such that \Delta b(j)i \Delta \Lambda  = 1.
+2. For each \Gamma  = 1; : : : ; k, iterate until convergence:
+
+(a) Ai  arg \Xi \Pi n\Sigma \Upsilon 0 \Delta Xi \Phi  BiA\Delta \Lambda F \Psi  * Pp\Omega q Apq
+(b) Bi  arg \Xi \Pi nfi\Upsilon 0\Omega flffifflijfl`^' \Delta Xi \Phi  BAi\Delta \Lambda F
+Discriminative disaggregation training:
+
+3. Set A?'_*  A'_*, ~B'_*  B'_*.
+4. Iterate until convergence:
+
+(a) ^A'_*  arg \Xi \Pi n\Sigma ,ssae\Upsilon 0 oe o/ AEX; ~B'_*; A'_*OE
+(b) ~B 
+
+h
+
+~B \Phi  ff
+
+O/
+
+o/ AEX \Phi  ~B ^AOE ^AT \Phi  o/ AEX \Phi  ~BA?OEo/A?OET
+
+!"
+
++
+(c) For all \Gamma ; #, b(j)i  b(j)i $\Delta b(j)i \Delta \Lambda .
+
+Given aggregated test examples AEX%:
+
+5. ^A%'_*  arg \Xi \Pi n\Sigma ,ssae\Upsilon 0 oe o/ AEX%; ~B'_*; A'_*OE
+6. Predict ^X%i = Bi ^A%i.
+
+2.2 Extensions
+Although, as we show shortly, the discriminative training procedure has made the largest differencein terms of improving disaggregation performance in our domain, a number of other modifications
+
+to the standard sparse coding formulation have also proven useful. Since these are typically trivialextensions or well-known algorithms, we mention them only briefly here.
+
+Total Energy Priors. One deficiency of the sparse coding framework for energy disaggregationis that the optimization objective does not take into consideration the size of an energy signal for
+determinining which class it belongs to, just its shape. Since total energy used is obviously a dis-criminating factor for different device types, we consider an extension that penalizes the
+
+`\Lambda  deviationbetween a device and its mean total energy. Formally, we augment the objective
+oe with the penalty
+
+oeT E& o/ AEX; B'_*; A'_*OE = oe o/ AEX; B'_*; A'_*OE \Psi  *T E&
+
+*'
+
+i*'
+
+\Delta ,i-T \Phi  -T BiAi\Delta \Lambda \Lambda  (11)
+
+where - denotes a vector of ones of the appropriate size, and ,i = 'm -T Xi denotes the averagetotal energy of device class
+
+\Gamma .
+
+Group Lasso. Since the data set we consider exhibits some amount of sparsity at the device level(i.e., several examples have zero energy consumed by certain device types, as there is either no such
+
+device in the home or it was not being monitored), we also would like to encourage a grouping effectto the activations. That is, we would like a certain coefficient being active for a particular class to
+encourage other coefficients to also be active in that class. To achieve this, we employ the groupLasso algorithm [29], which adds an
+
+`\Lambda  norm penalty to the activations of each device
+
+oeGLo/ AEX; B'_*; A'_*OE = oe o/ AEX; B'_*; A'_*OE \Psi  *GL
+
+*'
+
+i*'
+
+m'
+j*'
+
+\Delta .(j)i \Delta \Lambda : (12)
+
+Shift Invariant Sparse Coding. Shift invariant, or convolutional sparse coding is an extensionto the standard sparse coding framework where each basis is convolved over the input data, with
+a separate activation for each shift position [3, 10]. Such a scheme may intuitively seem to bebeneficial for the energy disaggregation task, where a given device might exhibit the same energy
+signature at different times. However, as we will show in the next section, this extension actuallyperform worse in our domain; this is likely due to the fact that, since we have ample training data
+
+5
+
+and a relatively low-dimensional domain (each energy signal has 168 dimensions, 24 hours perday times 7 days in the week), the standard sparse coding bases are able to cover all possible shift
+positions for typical device usage. However, pure shift invariant bases cannot capture informationabout when in the week or day each device is typically used, and such information has proven crucial
+for disaggregation performance.
+2.3 Implementation
+Space constraints preclude a full discussion of the implementation details of our algorithms, but forthe most part we rely on standard methods for solving the optimization problems. In particular,
+
+most of the time spent by the algorithm involves solving sparse optimization problems to find theactivation coefficients, namely steps 2a and 4a in Algorithm 1. We use a coordinate descent approach
+here, both for the standard and group Lasso version of the optimization problems, as these have beenrecently shown to be efficient algorithms for
+
+`1-type optimization problems [8, 9], and have theadded benefit that we can warm-start the optimization with the solution from previous iterations. To
+
+solve the optimization over Bi in step 2b, we use the multiplicative non-negative matrix factorizationupdate from [7].
+
+3 Experimental Results
+3.1 The Plugwise Energy Data Set and Experimental Setup
+We conducted this work using a data set provided by Plugwise, a European manufacturer of plug-level monitoring devices. The data set contains hourly energy readings from 10,165 different devices
+
+in 590 homes, collected over more than two years. Each device is labeled with one of 52 devicetypes, which we further reduce to ten broad categories of electrical devices: lighting, TV, computer,
+other electronics, kitchen appliances, washing machine and dryer, refrigerator and freezer, dish-washer, heating/cooling, and a miscellaneous category. We look at time periods in blocks of one
+week, and try to predict the individual device consumption over this week given only the whole-home signal (since the data set does not currently contain true whole-home energy readings, we
+approximate the home's overall energy usage by aggregating the individual devices). Crucially, wefocus on disaggregating data from homes that are absent from the training set (we assigned 70% of
+the homes to the training set, and 30% to the test set, resulting in 17,133 total training weeks and6846 testing weeks); thus, we are attempting to generalize over the basic category of devices, not
+just over different uses of the same device in a single house. We fit the hyper-parameters of thealgorithms (number of bases and regularization parameters) using grid search over each parameter
+independently on a cross validation set consisting of 20% of the training homes.
+3.2 Qualitative Evaluation of the Disaggregation Algorithms
+We first look qualitatively at the results obtained by the method. Figure 1 shows the true energy en-ergy consumed by two different houses in the test set for two different weeks, along with the energy
+
+consumption predicted by our algorithms. The figure shows both the predicted energy of severaldevices over the whole week, as well as a pie chart that shows the relative energy consumption of
+different device types over the whole week (a more intuitive display of energy consumed over theweek). In many cases, certain devices like the refrigerator, washer/dryer, and computer are predicted
+quite accurately, both in terms the total predicted percentage and in terms of the signals themselves.There are also cases where certain devices are not predicted well, such as underestimating the heating component in the example on the left, and a predicting spike in computer usage in the exampleon the right when it was in fact a dishwasher. Nonetheless, despite some poor predictions at the
+hourly device level, the breakdown of electric consumption is still quite informative, determiningthe approximate percentage of many devices types and demonstrating the promise of such feedback.
+
+In addition to the disaggregation results themselves, sparse coding representations of the differentdevice types are interesting in their own right, as they give a good intuition about how the different
+devices are typically used. Figure 2 shows a graphical representation of the learned basis functions.In each plot, the grayscale image on the right shows an intensity map of all bases functions learned
+for that device category, where each column in the image corresponds to a learned basis. The ploton the left shows examples of seven basis functions for the different device types. Notice, for
+example, that the bases learned for the washer/dryer devices are nearly all heavily peaked, whilethe refrigerator bases are much lower in maximum magnitude. Additionally, in the basis images
+devices like lighting demonstrate a clear "band" pattern, indicating that these devices are likely to
+
+6
+
+1 2 3 4 5 6 70
+1
+2
+3
+
+Wh
+ole
+ Ho
+
+me
+
+ 
+
+ 
+Actual Energy Predicted Energy
+
+1 2 3 4 5 6 70
+0.1
+0.2
+0.3
+0.4
+
+Co
+mp
+ute
+r
+
+1 2 3 4 5 6 70
+0.5
+
+1
+1.5
+
+2
+
+Wa
+she
+r/D
+rye
+r
+
+1 2 3 4 5 6 70
+0.5
+
+1
+
+Dis
+hw
+ash
+
+er
+
+1 2 3 4 5 6 70
+0.05
+
+0.1
+
+Re
+frig
+
+era
+tor
+
+1 2 3 4 5 6 70
+0.1
+0.2
+0.3
+0.4
+
+He
+atin
+
+g/C
+ool
+ing
+
+True Usage Predicted Usage
+
+ 
+
+ 
+Lighting
+TV
+Computer
+Electronics
+Kitchen Appliances
+Washer/Dryer
+Dishwasher
+Refrigerator
+Heating/Cooling
+Other
+
+1 2 3 4 5 6 70
+0.5
+
+1
+1.5
+
+2
+
+Wh
+ole
+ Ho
+
+me
+
+ 
+
+ 
+Actual Energy Predicted Energy
+
+1 2 3 4 5 6 70
+0.1
+0.2
+0.3
+0.4
+
+Co
+mp
+ute
+r
+
+1 2 3 4 5 6 70
+0.5
+
+1
+1.5
+
+Wa
+she
+r/D
+rye
+r
+
+1 2 3 4 5 6 70
+0.5
+
+1
+
+Dis
+hw
+ash
+
+er
+
+1 2 3 4 5 6 70
+0.05
+
+0.1
+
+Re
+frig
+
+era
+tor
+
+1 2 3 4 5 6 70
+0.02
+0.04
+0.06
+
+He
+atin
+
+g/C
+ool
+ing
+
+True Usage Predicted Usage
+
+ 
+
+ 
+Lighting
+TV
+Computer
+Electronics
+Kitchen Appliances
+Washer/Dryer
+Dishwasher
+Refrigerator
+Heating/Cooling
+Other
+
+Figure 1: Example predicted energy profiles and total energy percentages (best viewed in color).Blue lines show the true energy usage, and red the predicted usage, both in units of kWh.
+
+0
+0.2
+0.4
+0.6
+0.8
+
+1
+
+Lig
+htin
+
+g
+
+0
+0.2
+0.4
+0.6
+0.8
+
+1
+
+Re
+frid
+ger
+ato
+r
+
+0
+0.2
+0.4
+0.6
+0.8
+
+1
+
+Wa
+she
+r/D
+rye
+r
+
+Figure 2: Example basis functions learned from three device categories (best viewed in color). Theplot of the left shows seven example bases, while the image on the right shows all learned basis
+functions (one basis per column).
+be on and off during certain times of the day (each basis covers a week of energy usage, so the sevenbands represent the seven days). The plots also suggests why the standard implementation of shift
+
+invariance is not helpful here. There is sufficient training data such that, for devices like washers anddryers, we learn a separate basis for all possible shifts. In contrast, for devices like lighting, where
+the time of usage is an important factor, simple shift-invariant bases miss key information.
+3.3 Quantitative Evaluation of the Disaggregation Methods
+There are a number of components to the final algorithm we have proposed, and in this sectionwe present quantitative results that evaluate the performance of each of these different components.
+
+While many of the algorithmic elements improve the disaggregation performance, the results in thissection show that the discriminative training in particular is crucial for optimizing disaggregation
+performance. The most natural metric for evaluating disaggregation performance is the disaggrega-tion error in (4). However, average disaggregation error is not a particularly intuitive metric, and so
+we also evaluate a total-week accuracy of the prediction system, defined formally as
+
+Accuracy j
+
+P
+
+i\Gamma q m\Delta n
+
+\Theta P
+
+p(Xi)pq;
+
+P
+
+p(Bi ^\Lambda i)pq
+
+o
+
+P
+
+p\Gamma q _Xp\Gamma q
+
+: (13)
+
+7
+
+Method Training Set Test AccuracyDisagg. Err. Acc. Disagg. Err. Acc.
+Predict Mean Energy 20.98 45.78% 21.72 47.41%SISC 20.84 41.87% 24.08 41.79%
+
+Sparse Coding 10.54 56.96% 18.69 48.00%Sparse Coding + TEP 11.27 55.52% 16.86 50.62%
+Sparse Coding + GL 10.55 54.98% 17.18 46.46%Sparse Coding + TEP + GL 9.24 58.03% 14.05 52.52%
+
+DDSC 7.20 64.42% 15.59 53.70%DDSC + TEP 8.99 59.61% 15.61 53.23%
+DDSC + GL 7.59 63.09% 14.58 52.20%DDSC + TEP + GL 7.92 61.64% 13.20 55.05%
+
+Table 1: Disaggregation results of algorithms (TEP = Total Energy Prior, GL = Group Lasso, SISC= Shift Invariant Sparse Coding, DDSC = Discriminative Disaggregation Sparse Coding).
+
+0 20 40 60 80 1007.5
+8
+8.5
+
+9
+9.5 Training Set
+
+DDSC Iteration
+ 
+
+ 
+0 20 40 60 80 1000.56
+
+0.58
+0.6
+0.62
+0.64Disaggregation Error
+Accuracy
+
+0 20 40 60 80 10013
+13.5
+
+14
+14.5 Test Set
+
+DDSC Iteration
+ 
+
+ 
+0 20 40 60 80 1000.52
+
+0.54
+0.56
+0.58Disaggregation Error
+Accuracy
+
+Figure 3: Evolution of training and testing errors for iterations of the discriminative DDSC updates.
+Despite the complex definition, this quantity simply captures the average amount of energy predictedcorrectly over the week (i.e., the overlap between the true and predicted energy pie charts).
+
+Table 1 shows the disaggregation performance obtained by many different prediction methods. Theadvantage of the discriminative training procedure is clear: all the methods employing discriminative training perform nearly as well or better than all the methods without discriminative training;furthermore, the system with all the extensions, discriminative training, a total energy prior, and
+the group Lasso, outperforms all competing methods on both metrics. To put these accuracies incontext, we note that separate to the results presented here we trained an SVM, using a variety
+of hand-engineered features, to classify individual energy signals into their device category, andwere able to achieve at most 59% classification accuracy. It therefore seems unlikely that we could
+disaggregate a signal to above this accuracy and so, informally speaking, we expect the achievableperformance on this particular data set to range between 47% for the baseline of predicting mean energy (which in fact is a very reasonable method, as devices often follow their average usage patterns)and 59% for the individual classification accuracy. It is clear, then, that the discriminative training
+is crucial to improving the performance of the sparse coding disaggregation procedure within thisrange, and does provide a significant improvement over the baseline. Finally, as shown in Figure 3,
+both the training and testing error decrease reliably with iterations of DDSC, and we have found thatthis result holds for a wide range of parameter choices and step sizes (though, as with all gradient
+methods, some care be taken to choose a step size that is not prohibitively large).
+
+4 Conclusion
+Energy disaggregation is a domain where advances in machine learning can have a significant impacton energy use. In this paper we presented an application of sparse coding algorithms to this task,
+
+focusing on a large data set that contains the type of low-resolution data readily available from smartmeters. We developed the discriminative disaggregation sparse coding (DDSC) algorithm, a novel
+discriminative training procedure, and show that this algorithm significantly improves the accuracyof sparse coding for the energy disaggregation task.
+
+Acknowledgments This work was supported by ARPA-E (Advanced Research Projects Agency-Energy) under grant number DE-AR0000018. We are very grateful to Plugwise for providing us
+with their plug-level energy data set, and in particular we thank Willem Houck for his assistancewith this data. We also thank Carrie Armel and Adrian Albert for helpful discussions.
+
+8
+
+References
+
+[1] D. Archer. Global Warming: Understanding the Forecast. Blackwell Publishing, 2008.
+[2] M. Berges, E. Goldman, H. S. Matthews, and L Soibelman. Learning systems for electric comsumptionof buildings. In ASCI International Workshop on Computing in Civil Engineering, 2009.
+
+[3] T. Blumensath and M. Davies. On shift-invariant sparse coding. Lecture Notes in Computer Science,3195(1):1205-1212, 2004.
+[4] D. Bradley and J.A. Bagnell. Differentiable sparse coding. In Advances in Neural Information ProcessingSystems, 2008.
+[5] M. Collins. Discriminative training methods for hidden markov models: Theory and experiements withperceptron algorithms. In Proceedings of the Conference on Empirical Methods in Natural Language
+
+Processing, 2002.
+[6] S. Darby. The effectiveness of feedback on energy consumption. Technical report, Environmental ChangeInstitute, University of Oxford, 2006.
+
+[7] J. Eggert and E. Korner. Sparse coding and NMF. In IEEE International Joint Conference on NeuralNetworks, 2004.
+[8] J. Friedman, T. Hastie, H Hoefling, and R. Tibshirani. Pathwise coordinate optimization. The Annals ofApplied Statistics, 2(1):302-332, 2007.
+[9] J. Friedman, T. Hastie, and R. Tibshirani. A note on the group lasso and a sparse group lasso. Technicalreport, Stanford University, 2010.
+[10] R. Grosse, R. Raina, H. Kwong, and A. Y. Ng. Shift-invariant sparse coding for audio classification. InProceedings of the Conference on Uncertainty in Artificial Intelligence, 2007.
+[11] G. Hart. Nonintrusive appliance load monitoring. Proceedings of the IEEE, 80(12), 1992.
+[12] S. Hasler, H. Wersin, and E Korner. Combinging reconstruction and discrimination with class-specificsparse coding. Neural Computation, 19(7):1897-1918, 2007.
+
+[13] P.O. Hoyer. Non-negative sparse coding. In IEEE Workshop on Neural Networks for Signal Processing,2002.
+[14] C. Laughman, K. Lee, R. Cox, S. Shaw, S. Leeb, L. Norford, and P. Armstrong. Power signature analysis.IEEE Power & Energy Magazine, 2003.
+[15] C. Laughman, S. Leeb, and Lee. Advanced non-intrusive monitoring of electric loads. IEEE Power andEnergy, 2003.
+[16] W. Lee, G. Fung, H. Lam, F. Chan, and M. Lucente. Exploration on load signatures. InternationalConference on Electrical Engineering (ICEE), 2004.
+[17] J. Mairal, F. Bach, J. Ponce, G. Sapiro, and A. Zisserman. Supervised dictionary learning. In Advancesin Neural Information Processing Systems, 2008.
+[18] J. Mairal, M. Leordeanu, F. Bach, M. Hebert, and J. Ponce. Discriminative sparse image models forclass-specific edge detection and image interpretation. In European Conference on Computer Vision,
+
+2008.
+[19] B. Neenan and J. Robinson. Residential electricity use feedback: A research synthesis and economicframework. Technical report, Electric Power Research Institute, 2009.
+
+[20] B. A. Olshausen and D. J. Field. Emergence of simple-cell receptive field properties by learning a sparsecode for natural images. Nature, 381:607-609, 1996.
+[21] S. N. Patel, T. Robertson, J. A. Kientz, M. S. Reynolds, and G. D. Abowd. At the flick of a switch: De-tecting and classifying unique electrical events on the residential power line. 9th international conference
+
+on Ubiquitous Computing (UbiComp 2007), 2007.
+[22] S. T. Roweis. One microphone source separation. In Advances in Neural Information Processing Systems,2000.
+
+[23] M. N. Schmidt, J. Larsen, and F. Hsiao. Wind noise reduction using non-negative sparse coding. In IEEEWorkshop on Machine Learning for Signal Processing, 2007.
+[24] M N. Schmidt and R. K. Olsson. Single-channel speech separation using sparse non-negative matrixfactorization. In International Conference on Spoken Language Processing, 2006.
+[25] S. R. Shaw, C. B. Abler, R. F. Lepard, D. Luo, S. B. Leeb, and L. K. Norford. Instrumentation for highperformance nonintrusive electrical load monitoring. ASME, 120(224), 1998.
+[26] F. Sultanem. Using appliance signatures for monitoring residential loads at meter panel level. IEEETransaction on Power Delivery, 6(4), 1991.
+[27] B. Taskar, V. Chatalbashev, D. Koller, and C. Guestrin. Learning structured prediction models: A largemargin approach. In International Conference on Machine Learning, 2005.
+[28] Various. Annual Energy Review 2009. U.S. Energy Information Administration, 2009.
+[29] M. Yuan and Y. Lin. Model selection and estimation in regression with grouped variables. Journal of theRoyal Statisical Society, Series B, 68(1):49-67, 2007.
+
+9

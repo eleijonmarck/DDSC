@@ -1,0 +1,17 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Introduction}{4}
+\contentsline {subsection}{\numberline {1.1}Background}{5}
+\contentsline {section}{\numberline {2}Preliminaries}{8}
+\contentsline {subsection}{\numberline {2.1}Partially Ordered Sets}{8}
+\contentsline {subsubsection}{\numberline {2.1.1}Young Diagrams}{9}
+\contentsline {subsection}{\numberline {2.2}Combinatorial Game Theory}{10}
+\contentsline {subsubsection}{\numberline {2.2.1}Numbers}{13}
+\contentsline {subsubsection}{\numberline {2.2.2}Hackenbush}{14}
+\contentsline {subsubsection}{\numberline {2.2.3}Chomp}{15}
+\contentsline {section}{\numberline {3}Partizan Poset Games}{16}
+\contentsline {subsection}{\numberline {3.1}All Poset Games Are Numbers}{16}
+\contentsline {subsection}{\numberline {3.2}Chess-Colored Young Diagram Partizan Poset Games}{19}
+\contentsline {subsubsection}{\numberline {3.2.1}Two-Row Chess-Colored Young Diagrams}{20}
+\contentsline {subsubsection}{\numberline {3.2.2}Three-Row Chess-Colored Young Diagrams}{24}
+\contentsline {section}{\numberline {4}Conclusions and Open Questions}{34}
+\contentsline {section}{References}{36}

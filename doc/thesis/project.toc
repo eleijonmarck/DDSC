@@ -1,0 +1,54 @@
+\select@language {english}
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}
+\contentsline {subsection}{\numberline {1.1}Purpose}{4}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Thesis outline}{4}{subsection.1.2}
+\contentsline {section}{\numberline {2}Preliminaries}{6}{section.2}
+\contentsline {subsection}{\numberline {2.1}Optimization}{6}{subsection.2.1}
+\contentsline {subsubsection}{\numberline {2.1.1}Cost function}{6}{subsubsection.2.1.1}
+\contentsline {subsection}{\numberline {2.2}Machine Learning}{6}{subsection.2.2}
+\contentsline {subsubsection}{\numberline {2.2.1}Dimensionalty Reduction}{7}{subsubsection.2.2.1}
+\contentsline {subsubsection}{\numberline {2.2.2}Deep Learning}{8}{subsubsection.2.2.2}
+\contentsline {subsection}{\numberline {2.3}Artificial Neural Networks}{8}{subsection.2.3}
+\contentsline {subsubsection}{\numberline {2.3.1}Perceptron}{9}{subsubsection.2.3.1}
+\contentsline {subsubsection}{\numberline {2.3.2}Autoencoder}{10}{subsubsection.2.3.2}
+\contentsline {subsubsection}{\numberline {2.3.3}Sparse Coding and the connection to Neural Networks}{10}{subsubsection.2.3.3}
+\contentsline {subsubsection}{\numberline {2.3.4}Local Codes}{11}{subsubsection.2.3.4}
+\contentsline {subsubsection}{\numberline {2.3.5}Dense Distributed Codes}{11}{subsubsection.2.3.5}
+\contentsline {subsubsection}{\numberline {2.3.6}Sparse Codes}{11}{subsubsection.2.3.6}
+\contentsline {subsubsection}{\numberline {2.3.7}Sparse Coding}{13}{subsubsection.2.3.7}
+\contentsline {subsubsection}{\numberline {2.3.8}Non-Negative Sparse Coding}{15}{subsubsection.2.3.8}
+\contentsline {section}{\numberline {3}Problem Definition}{18}{section.3}
+\contentsline {subsection}{\numberline {3.1}Solution}{18}{subsection.3.1}
+\contentsline {section}{\numberline {4}Fabrication}{19}{section.4}
+\contentsline {subsection}{\numberline {4.1}Dataset}{19}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Data pre-processing}{19}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Discriminative Disaggregation via Sparse Coding}{24}{subsection.4.3}
+\contentsline {subsubsection}{\numberline {4.3.1}Structured prediction for Discriminative Disaggregation Sparse Coding}{25}{subsubsection.4.3.1}
+\contentsline {subsection}{\numberline {4.4}Implementation}{26}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.5}Implemented Algorithms}{27}{subsection.4.5}
+\contentsline {subsubsection}{\numberline {4.5.1}Non-Negative Sparse-Coding}{27}{subsubsection.4.5.1}
+\contentsline {subsubsection}{\numberline {4.5.2}Discriminative Disaggregation via Sparse Coding}{28}{subsubsection.4.5.2}
+\contentsline {section}{\numberline {5}Results}{29}{section.5}
+\contentsline {subsection}{\numberline {5.1}Experimental setup}{29}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Evaluation of algorithm}{29}{subsection.5.2}
+\contentsline {subsubsection}{\numberline {5.2.1}Results from the complete dataset}{32}{subsubsection.5.2.1}
+\contentsline {subsubsection}{\numberline {5.2.2}Results from weekdays and weekend hourly readings}{35}{subsubsection.5.2.2}
+\contentsline {subsubsection}{\numberline {5.2.3}Basis functions}{36}{subsubsection.5.2.3}
+\contentsline {subsection}{\numberline {5.3}Quantitative evaluation of the Disaggregation}{37}{subsection.5.3}
+\contentsline {section}{\numberline {6}Conclusions and Open Questions}{40}{section.6}
+\contentsline {subsection}{\numberline {6.1}Energy Disaggregation results}{40}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Algorithm}{40}{subsection.6.2}
+\contentsline {subsubsection}{\numberline {6.2.1}Extensions}{41}{subsubsection.6.2.1}
+\contentsline {subsection}{\numberline {6.3}Dataset}{41}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.4}Temporal difference}{41}{subsection.6.4}
+\contentsline {subsection}{\numberline {6.5}Future research}{42}{subsection.6.5}
+\contentsline {subsubsection}{\numberline {6.5.1}Hyper-parameter Optimization}{42}{subsubsection.6.5.1}
+\contentsline {subsubsection}{\numberline {6.5.2}Autoencoders}{42}{subsubsection.6.5.2}
+\contentsline {subsubsection}{\numberline {6.5.3}Block Coordinate Update}{42}{subsubsection.6.5.3}
+\contentsline {subsubsection}{\numberline {6.5.4}Dropout}{43}{subsubsection.6.5.4}
+\contentsline {subsection}{\numberline {6.6}Final words, Open questions}{43}{subsection.6.6}
+\contentsline {section}{References}{44}{section*.23}
+\contentsline {section}{\numberline {7}Appendix}{47}{section.7}
+\contentsline {subsection}{\numberline {7.1}Source Code for Utility Functions}{47}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}Source Code for Non-Negative Sparse Coding}{48}{subsection.7.2}
+\contentsline {subsection}{\numberline {7.3}Source Code for Discriminative Disaggregation}{49}{subsection.7.3}

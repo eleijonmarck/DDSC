@@ -1,0 +1,13 @@
+\beamer@endinputifotherversion {3.33pt}
+\select@language {english}
+\beamer@sectionintoc {1}{Introduction}{2}{0}{1}
+\beamer@sectionintoc {2}{Input}{7}{0}{2}
+\beamer@sectionintoc {3}{Input}{8}{0}{3}
+\beamer@sectionintoc {4}{Pre-processing}{9}{0}{4}
+\beamer@sectionintoc {5}{Sparse coding pre-training}{10}{0}{5}
+\beamer@sectionintoc {6}{DDT}{11}{0}{6}
+\beamer@sectionintoc {7}{DDT}{12}{0}{7}
+\beamer@sectionintoc {8}{DDT}{13}{0}{8}
+\beamer@sectionintoc {9}{Extensions}{14}{0}{9}
+\beamer@sectionintoc {10}{Suggestions}{15}{0}{10}
+\beamer@sectionintoc {11}{Suggestions}{16}{0}{11}

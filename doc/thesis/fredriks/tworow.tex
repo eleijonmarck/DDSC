@@ -1,0 +1,204 @@
+In this section we will prove that a partizan poset game played on a chess-colored two-row Young diagram is easy to compute by providing a formula to compute any such game $A_{x,y}$.
+\begin{thm}
+\label{thm:2rowvalue}
+There is a formula, given by (\ref{eq:2rowvalue}), to compute the value of partizan poset games played on chess-colored two-row Young diagrams.
+\begin{equation}
+\label{eq:2rowvalue}
+A_{x,y}=
+\frac{2}{5}+\frac{1}{15}2^{-(2y-2)}(-1)^y-\frac{1}{3}2^{-(x+y-1)}(-1)^x
+\end{equation}
+\end{thm}
+This is proved by using Lemma \ref{lem:chessdomopt} to reduce the game $A_{x,y}$ to two options per player, and, inductively, using the formula to determine which option is dominating to reduce the game to one option per player. Then, using Theorem \ref{thm:number}, it is just a matter of showing that the formula in fact yields the simplest number between the two dominating options.
+\begin{proof2}{Proof of Theorem \ref{thm:2rowvalue}}
+Assume that Theorem \ref{thm:2rowvalue} is true for all options of a game $A_{x,y}$. We will then show that the theorem then also holds for the game itself. By Conway Induction, this yields that Theorem \ref{thm:2rowvalue} is true.
+From Lemma \ref{lem:chessdomopt} we have that the dominating options of $A_{x,y}$ are to remove the greatest possible element in one of the rows. 
+\\
+Assume $x\ge y+2,y\ge2$. This yields that $A_{x-2,y},A_{x-1,y},A_{x,y-1},A_{x,y-2}$ are the dominating options of $A_{x,y}$. We want to find out when which options are dominating. We do that by comparing the differences between the values of the options using (\ref{eq:2rowvalue}), to see which is greater and when.
+\\
+If $x$ and $y$ are both even, then $A_{x,y}=\left\{ A_{x-2,y},A_{x,y-1}\middle|A_{x-1,y},A_{x,y-2}\right\}$. This yields the following differences between the option values:
+\begin{align*}
+\begin{split}
+A_{x-2,y}-A_{x,y-1}&=2^{-(2y-2)}(-1)^y\frac{1}{3}\Bigl(1-(-2)^{-(x-y)}\Bigr)\\
+&\ge0\text{ if $x\ge y$ and $y$ is even}\\
+&\le0\text{ if $x\ge y$ and $y$ is odd}
+\end{split}\\
+\begin{split}
+A_{x-1,y}-A_{x,y-2}&=2^{-(2y-2)}(-1)^y\Bigl(-1+(-2)^{-(x-y)}\Bigr)\\
+&\ge0\text{ if $x\ge y$ and $y$ is odd}\\
+&\le0\text{ if $x\ge y$ and $y$ is even}
+\end{split}
+\end{align*}
+Since $x\ge y$, clearly $A_{x-2,y}$ dominates $A_{x,y-1}$ for Left and $A_{x-1,y}$ dominates $A_{x,y-2}$ for Right, and hence $A_{x,y}=\left\{A_{x-2,y}\middle|A_{x-1,y}\right\}$ if $x$ and $y$ are even.
+\\
+Similarly, if $x$ and $y$ are both odd, then $A_{x,y}=\left\{A_{x-1,y},A_{x,y-2}\middle|A_{x-2,y},A_{x,y-1}\right\}$, and from the equations above, we have that $A_{x-1,y}$ dominates $A_{x,y-2}$ for Left and $A_{x-2,y}$ dominates $A_{x,y-1}$ for Right. Hence $A_{x,y}=\left\{A_{x-1,y}\middle|A_{x-2,y}\right\}$ if $x$ and $y$ are odd.
+\\
+For the other combination of parities of $x$ and $y$, we have the following value differences:
+\begin{align*}
+\begin{split}
+A_{x-2,y}-A_{x,y-2}&=(-4)^{-(y-1)}\\
+&>0\text{ if $y$ is odd}\\
+&<0\text{ if $y$ is even}
+\end{split}\\
+\begin{split}
+A_{x-1,y}-A_{x,y-1}&=2^{-(2y-2)}(-1)^y\frac{1}{3}\left(1+2(-2)^{-(x-y)}\right)\\
+&\ge0\text{ if $x\ge y$ and $y$ is even}\\
+&\le0\text{ if $x\ge y$ and $y$ is odd}
+\end{split}
+\end{align*}
+Clearly, $A_{x-2,y},A_{x,y-1}$ are options of Left (Right) only if $x,y$ are even (odd), and $A_{x-1,y},A_{x,y-2}$ are options of Left (Right) only if $x,y$ are odd (even). This yields that $A_{x-2,y},A_{x-1,y}$ always dominate $A_{x,y-1},A_{x,y-2}$, given that $x\ge y+2$. 
+\\
+In other words, if $x\ge y+2$, 
+\begin{align*}
+A_{x,y}=\left\{
+\begin{array}{l l}
+\left\{A_{x-2,y}\middle|A_{x-1,y}\right\}&\text{ if $x$ is even,}\\
+~\\
+\left\{A_{x-1,y}\middle|A_{x-2,y}\right\}&\text{ if $x$ is odd.}
+\end{array}\right.
+\end{align*}
+Using Theorem \ref{thm:number}, we therefore only need to show that the value of $A_{x,y}$ given by (\ref{eq:2rowvalue}) is the same as the simplest number in between the options above. If we compare the dominating options by examining the difference between their values, and the proposed value of the game, we get:
+\begin{equation}
+\begin{split}
+A_{x-2,y}-A_{x-1,y}&=2^{-(x+y-1)}\left(-2(-1)^x\right)\\
+A_{x-2,y}-A_{x,y}&=2^{-(x+y-1)}\left(-(-1)^x\right)\\
+A_{x,y}-A_{x-1,y}&=2^{-(x+y-1)}\left(-(-1)^x\right)
+\end{split}\tag{*}
+\label{eq:2simpldiff}
+\end{equation}
+In other words we can see that the absolute difference in the numerator between the option values is 2, and that the proposed value is the only value with the same denominator in between the value of the options. From Definition \ref{def:simpnum} we can conclude that the proposed value for $A_{x,y}$ in fact is the simplest number between the options, and hence that Equation (\ref{eq:2rowvalue}) holds for $x\ge y+2,y\ge2$.
+\\
+Now, assume $x\ge y+2,y=1$. We can then reduce $A_{x,y}$ to:
+\begin{align*}
+A_{x,y}=\left\{
+\begin{array}{l l}
+\left\{A_{x-2,1}\middle|A_{x-1,1},A_{x,0}\right\}&\text{ if $x$ is even}\\
+~\\
+\left\{A_{x-1,1}\middle|A_{x-2,1},A_{x,0}\right\}&\text{ if $x$ is odd}
+\end{array}\right.
+\end{align*}
+If we compare the value yields the value differences:
+\begin{align*}
+\begin{split}
+A_{x-1,1}-A_{x,0}&=\frac{1}{3}\left(-1+(-2)^{-(x-2)}\right)\\
+&\le0\text{ if $x\ge2$ is even}
+\end{split}\\
+\begin{split}
+A_{x-2,1}-A_{x,0}&=\frac{1}{3}\left(-1+(-2)^{-(x-1)}\right)\\
+&\le0\text{ if $x\ge 1$}
+\end{split}
+\end{align*}
+As we can see, playing in the first row always dominates playing in the second row for Right if $x\ge y+2,y=1$. In other words, we have the game
+\begin{align*}
+A_{x,y}=\left\{
+\begin{array}{l l}
+\left\{A_{x-2,1}\middle|A_{x-1,1}\right\}&\text{ if $x$ is even,}\\
+~\\
+\left\{A_{x-1,1}\middle|A_{x-2,1}\right\}&\text{ if $x$ is odd.}
+\end{array}\right.
+\end{align*}
+Comparing these options with the proposed game value yields the same results as in (\ref{eq:2simpldiff}), but substituted with $y=1$, and hence (\ref{eq:2rowvalue}) holds for $x\ge y+2,y=1$ as well.
+\\
+Now, assume $x\ge y+2,y=0$. Then
+\begin{align*}
+A_{x,y}=\left\{
+\begin{array}{l l}
+\left\{A_{x-2,0}\middle|A_{x-1,0}\right\}&\text{ if $x$ is even,}\\
+~\\
+\left\{A_{x-1,0}\middle|A_{x-2,0}\right\}&\text{ if $x$ is odd.}
+\end{array}\right.
+\end{align*}
+As with $y=1$, comparing the values of these options with the proposed game value yields the same results as in (\ref{eq:2simpldiff}), but substituted with $y=0$, and hence (\ref{eq:2rowvalue}) holds for $x\ge y+2,y=0$ as well. 
+\\
+We can therefore conclude that (\ref{eq:2rowvalue}) holds for $x\ge y+2,y\ge0$. 
+\\
+Now, assume $x=y+1,y\ge2$.We then have the following game:
+\begin{align*}
+A_{x,y}=A_{y+1,y}=\left\{
+\begin{array}{l l}
+\left\{A_{y,y},A_{y+1,y-1}\middle|A_{y-1,y-1},A_{y+1,y-2}\right\}&\text{ if $y$ is even}\\
+~\\
+\left\{A_{y-1,y-1},A_{y+1,y-2}\middle|A_{y,y},A_{y+1,y-1}\right\}&\text{ if $y$ is odd}
+\end{array}\right.
+\end{align*} 
+Comparing the options yields the differences:
+\begin{align*}
+\begin{split}
+A_{y,y}-A_{y+1,y-1}&=0
+\end{split}\\
+\begin{split}
+A_{y-1,y-1}-A_{y+1,y-2}&=(-4)^{-(y-1)}\\
+&>0\text{ if $y$ is odd}\\
+&<0\text{ if $y$ is even}
+\end{split}
+\end{align*}
+As $A_{y-1,y-1},A_{y+1,y-2}$ are options of Left (Right) only if $y$ is odd (even), clearly $A_{y-1,y-1}$ dominates over $A_{y+1,y-2}$. Moreover, since $A_{y,y}=A_{y+1,y-1}$, then they dominate each other, so we can choose to always play in the first row here as well. This lets us reduce the game to
+\begin{align*}
+A_{x,y}=A_{y+1,y}=\left\{
+\begin{array}{l l}
+\left\{A_{y,y}\middle|A_{y-1,y-1}\right\}&\text{ if $y$ is even,}\\
+~\\
+\left\{A_{y-1,y-1}\middle|A_{y,y}\right\}&\text{ if $y$ is odd.}
+\end{array}\right.
+\end{align*}
+If we compare the values of the dominating options and the proposed game value the same way as before, we have:
+\begin{equation*}
+\begin{split}
+A_{y,y}-A_{y-1,y-1}&=4^{-y}\left(-2(-1)^y\right)\\
+A_{y,y}-A_{y+1,y}&=4^{-y}\left(-(-1)^y\right)\\
+A_{y+1,y}-A_{y-1,y-1}&=4^{-y}\left(-(-1)^y\right)
+\end{split}
+\end{equation*}
+As before, this yields that the proposed value of the game is the simplest number between its dominating options, and hence (\ref{eq:2rowvalue}) holds for $x=y+1,y\ge2$.
+\\
+Now, assume $x=y,y\ge2$. This yields the game
+\begin{align*}
+A_{x,y}=A_{y,y}=\left\{
+\begin{array}{l l}
+\left\{A_{y-2,y-2},A_{y,y-1}\middle|A_{y-1,y-1},A_{y,y-2}\right\}&\text{ if $y$ is even,}\\
+~\\
+\left\{A_{y-1,y-1},A_{y,y-2}\middle|A_{y-2,y-2},A_{y,y-1}\right\}&\text{ if $y$ is odd.}
+\end{array}\right.
+\end{align*}
+Comparing the values of these options yields the differences:
+\begin{align*}
+\begin{split}
+A_{y-2,y-2}-A_{y,y-1}&=(-4)^{-(y-1)}\\
+&>0\text{ if $y$ is odd}\\
+&<0\text{ if $y$ is even}
+\end{split}\\
+\begin{split}
+A_{y-1,y-1}-A_{y,y-2}&=0
+\end{split}
+\end{align*}
+As $A_{y-2,y-2},A_{y,y-1}$ are options of Left (Right) only if $y$ is even (odd), then clearly $A_{y,y-1}$ dominates over $A_{y-2,y-2}$, i.e., it is dominating to play in the second row. Since $A_{y-1,y-1}=A_{y,y-2}$, we can choose to always play in the second row here too. This yields the reduced game
+\begin{align*}
+A_{x,y}=A_{y,y}=\left\{
+\begin{array}{l l}
+\left\{A_{y,y-1}\middle|A_{y,y-2}\right\}&\text{ if $y$ is even,}\\
+~\\
+\left\{A_{y,y-2}\middle|A_{y,y-1}\right\}&\text{ if $y$ is odd.}
+\end{array}\right.
+\end{align*}
+If we compare the values of these options and the proposed value of the game as before, we get:
+\begin{equation*}
+\begin{split}
+A_{y,y-1}-A_{y,y-2}&=4^{-y}\left(-4(-1)^y\right)\\
+A_{y,y-1}-A_{y,y}&=4^{-y}\left(-2(-1)^y\right)\\
+A_{y,y}-A_{y,y-2}&=4^{-y}\left(-2(-1)^y\right)
+\end{split}
+\end{equation*}
+In analogy with before, this yields that the proposed value of the game is the simplest number between its dominating options, and hence (\ref{eq:2rowvalue}) holds for $x=y,y\ge2$.
+\\
+Now, the only cases left are when $x< y+2,y<2$, a finite number of cases. It is therefore sufficient to check by hand if (\ref{eq:2rowvalue}) holds for these four cases. For these cases, i.e., $(x,y)\in\left\{(0,0),(1,1),(1,0),(2,1)\right\}$, we have, respectively, 
+\begin{align*}
+A_{0,0}&=\left\{\middle|\right\}=0\\
+A_{1,1}&=\left\{A_{0,0}\middle|A_{1,0}\right\}=\left\{0\middle|1\right\}=\frac{1}{2},\\
+A_{1,0}&=\left\{A_{0,0}\middle|\right\}=\left\{0\middle|\right\}=1,\\
+A_{2,1}&=\left\{A_{0,0}\middle|A_{1,1},A_{2,0}\right\}=\left\{0\middle|\frac{1}{2},\frac{1}{2}\right\}=\frac{1}{4},
+\end{align*} 
+which are all equal to the formula proposed values.
+\\
+As we can see that (\ref{eq:2rowvalue}) also holds for these for cases, we can conclude that it also holds for $x< y+2,y<2$, which also yields that it holds for any $x\ge y,y\ge0$. 
+\\
+This completes the proof.
+\end{proof2}
