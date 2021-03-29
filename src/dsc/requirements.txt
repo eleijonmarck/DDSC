@@ -1,5 +1,5 @@
 PySide==1.2.3
-Pygments==2.0.2
+Pygments==2.7.4
 argparse==1.2.1
 ipython==2.4.1
 matplotlib==1.4.3
